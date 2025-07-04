@@ -27,7 +27,8 @@
         "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?"
       },
       "[typst-code]": {
-        "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?"
+        "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+        "editor.formatOnSave": true,
       },
       "jupyter.debugJustMyCode": false,
       "debugpy.debugJustMyCode": false,
