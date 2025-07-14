@@ -1,0 +1,81 @@
+{
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "catppuccin.accentColor": "blue",
+  "catppuccin.italicComments": false,
+  "catppuccin.italicKeywords": false,
+  "terminal.integrated.inheritEnv": false,
+  "python.createEnvironment.trigger": "off",
+  "python.autoComplete.extraPaths": [
+    "${workspaceFolder}/.venv/bin/python3",
+  ],
+  "jupyter.askForKernelRestart": false,
+  "github.copilot.enable": {
+    "quarto": false,
+    "*": true,
+    "typst": true,
+    "python": true,
+    "rust": false
+  },
+  "editor.rulers": [
+    {
+      "column": 88,
+      "color": "#006699"
+    },
+    {
+      "column": 80,
+      "color": "#5f6a7f"
+    },
+  ],
+  "[typst]": {
+    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+    "editor.formatOnSave": true,
+  },
+  "[typst-code]": {
+    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+    "editor.formatOnSave": true,
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit",
+    }
+  },
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.organizeImports": "explicit",
+  },
+  "ruff.lineLength": 88,
+  "ruff.lint.select": [
+    "ALL"
+  ],
+  "ruff.lint.ignore": [
+    "ANN401", // Any type in func args are not allowed
+    "D203", // no blank lines between class def and docstring
+    "D213", // multiline summary should start in first line
+    "PGH", // pygrep hooks are ignored
+    "TD002", // todo author assignment is ignored
+    "TD003", // todo issue assignment is ignored
+  ],
+  "editor.fontSize": 13,
+  "ruff.nativeServer": "auto",
+  "vim.smartRelativeLine": true,
+  "zenMode.hideLineNumbers": false,
+  "vim.commandLineModeKeyBindings": [],
+  "editor.suggest.showWords": false,
+  "terminal.integrated.suggest.enabled": false,
+  "editor.lineNumbers": "relative",
+  "editor.fontFamily": "FiraCode Nerd Font Mono",
+  "editor.fontLigatures": true,
+  "tinymist.formatterPrintWidth": 100,
+  "tinymist.formatterProseWrap": true,
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
+  "[rust]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+    },
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+}
