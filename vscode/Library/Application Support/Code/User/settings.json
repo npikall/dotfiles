@@ -39,13 +39,13 @@
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
+      "source.organizeImports.ruff": "explicit",
       "source.fixAll": "explicit",
     }
   },
   "notebook.formatOnSave.enabled": true,
   "notebook.codeActionsOnSave": {
-    "notebook.source.organizeImports": "explicit",
+    "notebook.source.organizeImports.ruff": "explicit",
   },
   "ruff.lineLength": 88,
   "ruff.lint.select": [
