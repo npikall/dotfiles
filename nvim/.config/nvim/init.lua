@@ -101,16 +101,16 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- Open Terminal panes better
 vim.keymap.set('n', '<leader>h', function()
   require('nvterm.terminal').toggle 'horizontal'
-end)
+end, { desc = 'Toggle horizontal Terminal' })
 vim.keymap.set('t', '<leader>H', function()
   require('nvterm.terminal').toggle 'horizontal'
-end)
-vim.keymap.set('n', '<leader>v', function()
-  require('nvterm.terminal').toggle 'vertical'
-end)
-vim.keymap.set('t', '<leader>V', function()
-  require('nvterm.terminal').toggle 'vertical'
-end)
+end, { desc = 'Toggle horizontal Terminal from Terminal Mode' })
+-- vim.keymap.set('n', '<leader>v', function()
+--   require('nvterm.terminal').toggle 'vertical'
+-- end)
+-- vim.keymap.set('t', '<leader>V', function()
+--   require('nvterm.terminal').toggle 'vertical'
+-- end)
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -126,6 +126,11 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Custom Window and Tab management
+vim.keymap.set('n', '<C-T>', '<C-w>T', { desc = 'Break out into new Tab' })
+vim.keymap.set('n', '<leader>1', '<C-w>gt', { desc = 'Switch to next Tab' })
+vim.keymap.set('n', '<leader>v', '<C-w>v', { desc = 'Split Window vertically' })
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -187,7 +192,7 @@ require('lazy').setup({
   {
     'mrcjkb/rustaceanvim',
     version = '^6', -- Recommended
-    lazy = false, -- This plugin is already lazy
+    lazy = false,   -- This plugin is already lazy
   },
 
   -- NOTE: Plugins can also be added by using a table,
@@ -239,7 +244,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -285,9 +290,9 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>s',  group = '[S]earch' },
+        { '<leader>t',  group = '[T]oggle' },
+        { '<leader>gh', group = '[G]it [H]unk', mode = { 'n', 'v' } },
       },
     },
   },
@@ -320,7 +325,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -622,7 +627,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         pyright = {},
-        ruff = {}, -- added by me -> might need adaption
+        ruff = {},     -- added by me -> might need adaption
         rust_analyzer = {},
         tinymist = {}, -- added by me aswell
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
