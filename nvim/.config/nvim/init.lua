@@ -953,6 +953,7 @@ require('lazy').setup({
   require 'custom.plugins.git-stuff',
   require 'custom.plugins.none-ls',
   require 'custom.plugins.surround',
+  require 'custom.plugins.tabular',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
