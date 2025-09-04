@@ -52,12 +52,13 @@
     "ALL"
   ],
   "ruff.lint.ignore": [
-    "ANN401", // Any type in func args are not allowed
-    "D203", // no blank lines between class def and docstring
-    "D213", // multiline summary should start in first line
-    "PGH", // pygrep hooks are ignored
-    "TD002", // todo author assignment is ignored
-    "TD003", // todo issue assignment is ignored
+    "ANN401", // any-type (checks if func args have type any)
+    "D203",   // incorrect-blank-line-before-class (conflicts with D211)
+    "D213",   // multiline-summary-second-line (conflicts with D212)
+    "PGH",    // pygrep hooks are ignored
+    "TD002",  // missing-todo-author
+    "TD003",  // missing-todo-link
+    "T201",   // print (remove print for debugging)
   ],
   "editor.fontSize": 13,
   "ruff.nativeServer": "auto",
