@@ -1,0 +1,7 @@
+blank_lines_lower_bound = 0
+blank_lines_upper_bound = 1
+hard_tabs = false
+imports_layout = "HorizontalVertical"
+indent_style = "Block"
+max_width = 80
+tab_spaces = 4
