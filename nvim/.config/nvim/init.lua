@@ -51,6 +51,13 @@ vim.o.updatetime = 250
 -- Decrease mapped sequence wait time
 vim.o.timeoutlen = 300
 
+-- Auto Reload Files when changed in background
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'BufEnter' }, {
+  pattern = '*',
+  command = 'checktime',
+})
+
 -- Configure how new splits should be opened
 vim.o.splitright = true
 vim.o.splitbelow = true
@@ -736,7 +743,7 @@ require('lazy').setup({
           prepend_args = { '--line-width', '100', '--wrap-text' },
         },
         ruff = {
-          prepend_args = { '--line-width', '100' },
+          prepend_args = { '--line-width', '88' },
         },
       },
     },
