@@ -22,3 +22,14 @@ The Extensions listed here can be installed via the `Justfile` with:
 ```bash
 just extensions
 ```
+
+## Dependencies
+
+> [!IMPORTANT]
+> Listed dependencies are probably incomplete.
+
+- `stow`
+- `ya` `yazi`
+- `lazygit`
+- `vscode`
+- `git-delta`
