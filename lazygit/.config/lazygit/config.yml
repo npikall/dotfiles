@@ -46,4 +46,4 @@ os:
 git:
   paging:
     colorArg: always
-    pager: delta --dark --paging=never
+    pager: delta --dark --paging=never --plus-emph-style="bold white green" --minus-emph-style="bold white red" --plus-style="white "#005000""  --minus-style="white "#80001a""
