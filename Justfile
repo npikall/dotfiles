@@ -39,3 +39,7 @@ extensions:
     echo "Install $extension"
     code --install-extension "$extension" --force
     done
+
+# List all vscode extensions and pipe them in the extensions file
+ext-list:
+	code --list-extensions > vscode-extensions.txt

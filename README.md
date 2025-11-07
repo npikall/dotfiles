@@ -15,6 +15,9 @@ In order to update the `vscode-extensions.txt` file run the following:
 
 ```bash
 code --list-extensions > vscode-extensions.txt
+
+# better to use the justfile
+just ext-list
 ```
 
 The Extensions listed here can be installed via the `Justfile` with:
