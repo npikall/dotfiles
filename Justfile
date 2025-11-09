@@ -2,7 +2,6 @@
 default:
     @just --list
 
-
 # Stow all packages that are not shell/platform specific
 stow-all:
     @echo "{{ GREEN }}Install all packages{{ NORMAL }}"
@@ -12,14 +11,12 @@ stow-all:
     stow yazi -t ~/
     @echo "{{ GREEN }}All installed {{ NORMAL }}"
 
-
 # Install all packages for MacOS
 [macos]
 platform:
     @echo "{{ GREEN }}Install for Linux{{ NORMAL }}"
     stow vscode -t ~/
     @echo "{{ GREEN }}All installed {{ NORMAL }}"
-
 
 # Install all packages for Linux
 [linux]
@@ -28,18 +25,13 @@ platform:
     stow vscode-linux -t ~/
     @echo "{{ GREEN }}All installed {{ NORMAL }}"
 
-
 # Install all extensions saved in vscode-extensions.txt
 extensions:
-    set -euo pipefail
-    #!/usr/bin/env bash
-
-    cat vscode-extensions.txt | while read extension || [[ -n $extension ]];
-    do
-    echo "Install $extension"
-    code --install-extension "$extension" --force
-    done
+    while read -r line; do \
+    echo "install $line"; \
+    code --install-extension "$line"; \
+    done < vscode-extensions.txt
 
 # List all vscode extensions and pipe them in the extensions file
 ext-list:
-	code --list-extensions > vscode-extensions.txt
+    code --list-extensions > vscode-extensions.txt
