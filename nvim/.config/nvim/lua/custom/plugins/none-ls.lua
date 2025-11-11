@@ -16,6 +16,7 @@ return {
         'stylua',
         'typstyle',
         'gopls',
+        'ty',
       },
       automatic_installation = true,
     }
