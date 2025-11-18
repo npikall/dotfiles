@@ -15,3 +15,12 @@ function y() {
 }
 
 eval "$(starship init zsh)"
+
+export GPG_TTY=$(tty)
+
+
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+
+. "$HOME/.local/bin/env"
