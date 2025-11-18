@@ -1,82 +1,75 @@
 {
-  "workbench.colorTheme": "Catppuccin Mocha",
-  "catppuccin.accentColor": "blue",
-  "catppuccin.italicComments": false,
-  "catppuccin.italicKeywords": false,
-  "terminal.integrated.inheritEnv": false,
-  "python.createEnvironment.trigger": "off",
-  "python.autoComplete.extraPaths": [
-    "${workspaceFolder}/.venv/bin/python3",
-  ],
-  "jupyter.askForKernelRestart": false,
-  "github.copilot.enable": {
-    "quarto": false,
-    "*": true,
-    "typst": true,
-    "python": true,
-    "rust": false
-  },
-  "editor.rulers": [
-    {
-      "column": 88,
-      "color": "#006699"
+    "chat.commandCenter.enabled": false,
+    "editor.formatOnSave": true,
+    "vim.leader": " ",
+    "window.menuBarVisibility": "compact",
+    "workbench.colorTheme": "Rosé Pine Moon",
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.navigationControl.enabled": false,
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                "<leader>",
+                "h"
+            ],
+            "commands": [
+                "workbench.action.togglePanel"
+            ]
+        },
+        {
+            "before": [
+                "K"
+            ],
+            "commands": [
+                "editor.action.showHover"
+            ]
+        },
+    ],
+    "notebook.lineNumbers": "on",
+    "editor.lineNumbers": "relative",
+    "editor.minimap.renderCharacters": false,
+    "editor.fontFamily": "FiraCode Nerd Font Mono",
+    "autoDocstring.docstringFormat": "numpy",
+    "python.analysis.autoImportCompletions": true,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit",
+            "source.fixAll": "explicit",
+        }
     },
-    {
-      "column": 80,
-      "color": "#5f6a7f"
+    "notebook.formatOnSave.enabled": true,
+    "notebook.codeActionsOnSave": {
+        "notebook.source.organizeImports.ruff": "explicit",
+        "notebook.source.fixAll": "explicit",
     },
-  ],
-  "[typst]": {
-    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
-    "editor.formatOnSave": true,
-  },
-  "[typst-code]": {
-    "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
-    "editor.formatOnSave": true,
-  },
-  "workbench.iconTheme": "vscode-icons",
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports.ruff": "explicit",
-      "source.fixAll": "explicit",
+    "jupyter.askForKernelRestart": false,
+    "yaml.schemas": {
+        "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
+    },
+    "yaml.customTags": [
+        "!ENV scalar",
+        "!ENV sequence",
+        "!relative scalar",
+        "tag:yaml.org,2002:python/name:material.extensions.emoji.to_svg",
+        "tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji",
+        "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format",
+        "tag:yaml.org,2002:python/object/apply:pymdownx.slugs.slugify mapping"
+    ],
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
+    ],
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.enable": {
+        "quarto": false,
+        "python": true,
+        "*": false
+    },
+    "docker.extension.enableComposeLanguageServer": false,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportDeprecated": "warning",
+        "reportMatchNotExhaustive": "error",
     }
-  },
-  "notebook.formatOnSave.enabled": true,
-  "notebook.codeActionsOnSave": {
-    "notebook.source.organizeImports.ruff": "explicit",
-  },
-  "ruff.lineLength": 88,
-  "ruff.lint.select": [
-    "ALL"
-  ],
-  "ruff.lint.ignore": [
-    "ANN401", // any-type (checks if func args have type any)
-    "D203",   // incorrect-blank-line-before-class (conflicts with D211)
-    "D213",   // multiline-summary-second-line (conflicts with D212)
-    "PGH",    // pygrep hooks are ignored
-    "TD002",  // missing-todo-author
-    "TD003",  // missing-todo-link
-    "T201",   // print (remove print for debugging)
-  ],
-  "editor.fontSize": 13,
-  "ruff.nativeServer": "auto",
-  "vim.smartRelativeLine": true,
-  "zenMode.hideLineNumbers": false,
-  "vim.commandLineModeKeyBindings": [],
-  "editor.suggest.showWords": false,
-  "terminal.integrated.suggest.enabled": false,
-  "editor.lineNumbers": "relative",
-  "editor.fontFamily": "FiraCode Nerd Font Mono",
-  "editor.fontLigatures": true,
-  "tinymist.formatterPrintWidth": 100,
-  "tinymist.formatterProseWrap": true,
-  "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
-  "[rust]": {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-    },
-  },
-  "github.copilot.nextEditSuggestions.enabled": true,
 }

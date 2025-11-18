@@ -12,14 +12,23 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
-	"Main function": {
+	"Main Function": {
 		"prefix": "ifmain",
 		"body": [
-			"def main($2) -> None:",
-			"\t${1:pass}\n\n",
-			"if __name__ == '__main__':",
-			"\tmain($0)",
+			"def main() -> None:",
+			"   pass",
+			"",
+			"",
+			"if __name__ == \"__main__\":",
+			"    main()",
 		],
-		"description": "Main function template"
+		"description": "Make a main function and add the if name=main check."
 	},
+	"Type Ignore": {
+		"prefix": "tyignore",
+		"body": [
+			"  # type: ignore[$0]",
+		],
+		"description": "Add a type ignore statement."
+	}
 }
