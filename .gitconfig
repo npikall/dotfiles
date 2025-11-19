@@ -1,0 +1,11 @@
+[init]
+	default = main
+	defaultBranch = main
+[core]
+	editor = nvim
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[merge]
+	tool = nvimdiff3
