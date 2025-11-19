@@ -31,7 +31,7 @@ return {
       },
       require 'none-ls.formatting.ruff_format',
       null_ls.builtins.formatting.stylua,
-      null_ls.builtins.formatting.prettier.with { filetypes = { 'json', 'yaml', 'markdown' } },
+      null_ls.builtins.formatting.prettier.with { filetypes = { 'json', 'yaml', 'markdown', 'toml' } },
       null_ls.builtins.formatting.shfmt.with { args = { '-i', '4' } },
       null_ls.builtins.formatting.typstyle,
       -- null_ls.builtins.formatting.gopls,
