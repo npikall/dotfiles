@@ -3,8 +3,10 @@ aykutsarac.jsoncrack-vscode
 bierner.markdown-preview-github-styles
 charliermarsh.ruff
 docker.docker
+esbenp.prettier-vscode
 github.copilot
 github.copilot-chat
+github.vscode-github-actions
 golang.go
 gruntfuggly.todo-tree
 mechatroner.rainbow-csv
