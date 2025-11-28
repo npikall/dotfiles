@@ -112,12 +112,12 @@ end, { desc = 'Toggle horizontal Terminal' })
 vim.keymap.set('t', '<leader>H', function()
   require('nvterm.terminal').toggle 'horizontal'
 end, { desc = 'Toggle horizontal Terminal from Terminal Mode' })
--- vim.keymap.set('n', '<leader>v', function()
---   require('nvterm.terminal').toggle 'vertical'
--- end)
--- vim.keymap.set('t', '<leader>V', function()
---   require('nvterm.terminal').toggle 'vertical'
--- end)
+vim.keymap.set('n', '<leader>V', function()
+  require('nvterm.terminal').toggle 'vertical'
+end)
+vim.keymap.set('t', '<leader>V', function()
+  require('nvterm.terminal').toggle 'vertical'
+end)
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -199,7 +199,7 @@ require('lazy').setup({
   {
     'mrcjkb/rustaceanvim',
     version = '^6', -- Recommended
-    lazy = false, -- This plugin is already lazy
+    lazy = false,   -- This plugin is already lazy
   },
 
   -- NOTE: Plugins can also be added by using a table,
@@ -251,7 +251,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -297,8 +297,8 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]oggle' },
+        { '<leader>s',  group = '[S]earch' },
+        { '<leader>t',  group = '[T]oggle' },
         { '<leader>gh', group = '[G]it [H]unk', mode = { 'n', 'v' } },
       },
     },
@@ -332,7 +332,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -634,7 +634,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         pyright = {},
-        ruff = {}, -- added by me -> might need adaption
+        ruff = {},     -- added by me -> might need adaption
         rust_analyzer = {},
         tinymist = {}, -- added by me aswell
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -974,6 +974,7 @@ require('lazy').setup({
   require 'custom.plugins.none-ls',
   require 'custom.plugins.surround',
   require 'custom.plugins.align',
+  require 'custom.plugins.quarto',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
