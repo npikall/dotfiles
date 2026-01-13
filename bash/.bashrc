@@ -95,6 +95,7 @@ alias l='ls -CF'
 alias c='clear'
 alias bat='batcat'
 alias dev='$HOME/scripts/server-tmux.sh'
+alias ve='source .venv/bin/activate'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
