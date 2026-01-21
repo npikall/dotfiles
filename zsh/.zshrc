@@ -1,4 +1,3 @@
-export TYPST_PACKAGE_PATH="~/Library/Application Support/typst/packages/local"
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 
 alias c="clear"
