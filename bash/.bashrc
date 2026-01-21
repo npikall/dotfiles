@@ -94,8 +94,9 @@ alias la='ls -A'
 alias l='ls -CF'
 alias c='clear'
 alias bat='batcat'
-alias dev='$HOME/scripts/server-tmux.sh'
+alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias ve='source .venv/bin/activate'
+alias pomo='$HOME/scripts/pomo.sh'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
