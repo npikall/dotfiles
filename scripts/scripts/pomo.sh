@@ -28,10 +28,10 @@ function pom() {
         ;;
     esac
 
-    timer "$work" &&
+    timer -n "work" "$work" &&
         notify-send -u normal "Pomodoro" "Work Timer is up! Take a Break 😊" &&
         gum confirm "Ready for a break?" &&
-        timer "$break" &&
+        timer -n "break" "$break" &&
         notify-send -u normal "Pomodoro" "Break is over! Get back to work 😬"
 }
 
