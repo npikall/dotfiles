@@ -16,6 +16,7 @@ return {
         'stylua',
         'typstyle',
         'gopls',
+        'golangci_lint_ls',
         'ty',
       },
       automatic_installation = true,
