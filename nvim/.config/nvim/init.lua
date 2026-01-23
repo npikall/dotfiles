@@ -364,6 +364,7 @@ require('lazy').setup({
           end
 
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+            vim.lsp.inlay_hint.enable(true)
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
@@ -412,9 +413,9 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
-        pyright = {},
-        ruff = {}, -- added by me -> might need adaption
+        gopls = {},
+        ruff = {},     -- added by me -> might need adaption
+        ty = {},       -- added by me -> might need adaption
         rust_analyzer = {},
         tinymist = {}, -- added by me aswell
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -608,22 +609,10 @@ require('lazy').setup({
     },
   },
 
-  -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-  require 'custom.plugins.preview',
-  require 'custom.plugins.alpha',
-  require 'custom.plugins.nvterm',
-  require 'custom.plugins.debugging',
-  require 'custom.plugins.git-stuff',
-  require 'custom.plugins.none-ls',
-  require 'custom.plugins.surround',
-  require 'custom.plugins.align',
-  require 'custom.plugins.quarto',
-
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
