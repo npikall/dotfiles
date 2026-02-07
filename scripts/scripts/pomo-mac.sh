@@ -12,8 +12,8 @@ function pom() {
 
     case "$split" in
     "25/5")
-        work="2s"
-        break="2s"
+        work="25m"
+        break="5m"
         ;;
     "50/10")
         work="50m"
