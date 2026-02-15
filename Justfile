@@ -1,37 +1,47 @@
-[private]
-default:
+[default]
+_default:
     @just --list
 
-# Stow all packages that are not shell/platform specific
-stow-all:
-    @echo "{{ GREEN }}Install all packages{{ NORMAL }}"
-    stow lazygit -t ~/
-    stow nvim -t ~/
-    stow rustfmt -t ~/
-    stow yazi -t ~/
-    @echo "{{ GREEN }}All installed {{ NORMAL }}"
+alias list := list-extensions
+alias install := install-extensions
+
+home := "{{ home_directory() }}"
+config_dir := "{{ config_directory() }}"
+
+# Install extra configurations
+extras:
+    stow cobra -t "{{ home }}" --adopt
+    stow rustfmt -t "{{ home }}" --adopt
+    stow scripts -t "{{ home }}" --adopt
+    stow vscode -t "{{ config_dir }}"
+
+# Install all base tool configurations
+base:
+    stow lazygit -t "{{ config_dir }}/lazygit" --adopt
+    stow nvim -t "{{ home }}" --adopt
+    stow starship -t "{{ home }}" --adopt
+    stow yazi -t "{{ home }}" --adopt
+    stow zellij -t "{{ home }}" --adopt
 
 # Install all packages for MacOS
 [macos]
-platform:
-    @echo "{{ GREEN }}Install for Linux{{ NORMAL }}"
-    stow vscode -t ~/
-    @echo "{{ GREEN }}All installed {{ NORMAL }}"
+stow: && base extras
+    stow zsh -t "{{ home }}" --adopt
 
 # Install all packages for Linux
 [linux]
-platform:
-    @echo "{{ GREEN }}Install for MacOS{{ NORMAL }}"
-    stow vscode-linux -t ~/
-    @echo "{{ GREEN }}All installed {{ NORMAL }}"
+stow: && base extras
+    stow bash -t "{{ home }}" --adopt
 
 # Install all extensions saved in vscode-extensions.txt
-extensions:
+[group("vscode")]
+install-extensions:
     while read -r line; do \
     echo "install $line"; \
     code --install-extension "$line"; \
     done < vscode-extensions.txt
 
-# List all vscode extensions and pipe them in the extensions file
-ext-list:
+# List all vscode extensions and write them in the extensions file
+[group("vscode")]
+list-extensions:
     code --list-extensions > vscode-extensions.txt
