@@ -8,14 +8,14 @@ alias install := install-extensions
 home := "{{ home_directory() }}"
 config_dir := "{{ config_directory() }}"
 
-# Install extra configurations
+# Install only extra configurations
 extras:
     stow cobra -t "{{ home }}" --adopt
     stow rustfmt -t "{{ home }}" --adopt
     stow scripts -t "{{ home }}" --adopt
     stow vscode -t "{{ config_dir }}"
 
-# Install all base tool configurations
+# Install only basic configurations
 base:
     stow lazygit -t "{{ config_dir }}/lazygit" --adopt
     stow nvim -t "{{ home }}" --adopt
@@ -23,12 +23,12 @@ base:
     stow yazi -t "{{ home }}" --adopt
     stow zellij -t "{{ home }}" --adopt
 
-# Install all packages for MacOS
+# Install all configurations (base + extra + shell) for MacOS
 [macos]
 stow: && base extras
     stow zsh -t "{{ home }}" --adopt
 
-# Install all packages for Linux
+# Install all configurations (base + extra + shell) for Linux
 [linux]
 stow: && base extras
     stow bash -t "{{ home }}" --adopt
