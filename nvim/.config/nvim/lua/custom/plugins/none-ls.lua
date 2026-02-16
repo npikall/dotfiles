@@ -9,8 +9,6 @@ return {
     require('mason-null-ls').setup {
       ensure_installed = {
         'ruff',
-        'pyright',
-        'pylsp',
         'prettier',
         'shfmt',
         'stylua',
@@ -35,7 +33,6 @@ return {
       null_ls.builtins.formatting.prettier.with { filetypes = { 'json', 'yaml', 'markdown', 'toml' } },
       null_ls.builtins.formatting.shfmt.with { args = { '-i', '4' } },
       null_ls.builtins.formatting.typstyle,
-      -- null_ls.builtins.formatting.gopls,
     }
 
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
