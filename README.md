@@ -46,7 +46,8 @@ You will need to install the following dependencies for a nice experience:
 There are a couple of Shell Scripts, that are aliased in the `.bashrc`/`.zshrc` files, that will run:
 
 - a pomodoro timer
-- a `zelloj`/`tmux` setup with two tabs, one for development and the other for a server
+- a `zellij`/`tmux` setup with two tabs, one for development and the other for a server
+- pre-configured copier templates for mainly python projects
 
 ```bash
 just install-extensions
