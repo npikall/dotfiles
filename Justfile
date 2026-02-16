@@ -8,6 +8,24 @@ alias install := install-extensions
 home := "{{ home_directory() }}"
 config_dir := "{{ config_directory() }}"
 
+xdg_config_dir := if env('XDG_CONFIG_HOME', '') =~ '^/' {
+  env('XDG_CONFIG_HOME')
+} else {
+  home_directory() / '.config'
+}
+
+
+
+# stow only layzgit
+[linux]
+lazygit:
+    stow lazygit -t "{{ xdg_config_dir }}/lazygit" --adopt
+
+# stow only layzgit
+[macos]
+lazygit:
+    stow lazygit -t "{{ config_dir }}/lazygit" --adopt
+
 # Install only extra configurations
 extras:
     stow cobra -t "{{ home }}" --adopt
@@ -16,8 +34,7 @@ extras:
     stow vscode -t "{{ config_dir }}"
 
 # Install only basic configurations
-base:
-    stow lazygit -t "{{ config_dir }}/lazygit" --adopt
+base: lazygit
     stow nvim -t "{{ home }}" --adopt
     stow starship -t "{{ home }}" --adopt
     stow yazi -t "{{ home }}" --adopt
