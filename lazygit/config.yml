@@ -31,6 +31,6 @@ gui:
 os:
   editPreset: "nvim"
 git:
-  pagers:
-    - colorArg: always
-      pager: delta --dark --paging=never --plus-emph-style="bold white green" --minus-emph-style="bold white red" --plus-style="white "#005000""  --minus-style="white "#80001a""
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never --plus-emph-style="bold white green" --minus-emph-style="bold white red" --plus-style="white "#005000""  --minus-style="white "#80001a""
