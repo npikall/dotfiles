@@ -90,6 +90,20 @@ vim.keymap.set('n', '<C-T>', '<C-w>T', { desc = 'Break out into new Tab' })
 vim.keymap.set('n', '<leader>1', '<C-w>gt', { desc = 'Switch to next Tab' })
 vim.keymap.set('n', '<leader>v', '<C-w>v', { desc = 'Split Window vertically' })
 
+-- Golang Errors
+vim.keymap.set('n', '<leader>er', function()
+  local line = vim.api.nvim_get_current_line()
+  local indent = line:match '^%s*' or ''
+
+  local block = {
+    indent .. 'if err != nil {',
+    indent .. '    return err',
+    indent .. '}',
+  }
+
+  vim.api.nvim_put(block, 'l', true, true)
+end, { desc = 'Insert Go error return block' })
+
 -- NOTE: [[ Basic Autocommands ]]
 
 -- Highlight when yanking (copying) text
@@ -414,8 +428,8 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         gopls = {},
-        ruff = {},     -- added by me -> might need adaption
-        ty = {},       -- added by me -> might need adaption
+        ruff = {}, -- added by me -> might need adaption
+        ty = {}, -- added by me -> might need adaption
         rust_analyzer = {},
         tinymist = {}, -- added by me aswell
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
