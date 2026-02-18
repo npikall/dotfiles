@@ -5,18 +5,11 @@ _default:
 alias list := list-extensions
 alias install := install-extensions
 
-home := "{{ home_directory() }}"
-config_dir := "{{ config_directory() }}"
+home := home_directory()
+config_dir := config_directory()
+xdg_config_dir := if env('XDG_CONFIG_HOME', '') =~ '^/' { env('XDG_CONFIG_HOME') } else { home_directory() / '.config' }
 
-xdg_config_dir := if env('XDG_CONFIG_HOME', '') =~ '^/' {
-  env('XDG_CONFIG_HOME')
-} else {
-  home_directory() / '.config'
-}
-
-
-
-# stow only layzgit
+# stow only lazygit
 [linux]
 lazygit:
     stow lazygit -t "{{ xdg_config_dir }}/lazygit" --adopt
