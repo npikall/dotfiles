@@ -39,7 +39,7 @@ scripts:
 # stow only vscode
 [group("package")]
 vscode:
-    stow vscode -t "{{ config_dir }}"
+    stow vscode -t "{{ config_dir }}" --adopt
 
 # stow only nvim
 [group("package")]
