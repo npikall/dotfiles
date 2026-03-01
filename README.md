@@ -39,6 +39,7 @@ You will need to install the following dependencies for a nice experience:
 - [`stow`][stow] to move the dotfiles from this repo to the targets
 - [`vscode`][vscode] a code editor (only for Jupyter Notebooks, instead of nvim)
 - [`yazi`][yazi] a terminal file manager written in rust
+- [`zoxide`] a smarter `cd` command
 - [`zellij`][zellij] a easy to use terminal multiplexer
 
 ## Scripts
@@ -63,4 +64,5 @@ just install-extensions
 [stow]: https://www.gnu.org/software/stow/
 [vscode]: https://code.visualstudio.com
 [yazi]: https://yazi-rs.github.io
+[zoxide]: https://github.com/ajeetdsouza/zoxide#getting-started
 [zellij]: https://zellij.dev
