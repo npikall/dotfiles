@@ -71,5 +71,6 @@
     "python.analysis.diagnosticSeverityOverrides": {
         "reportDeprecated": "warning",
         "reportMatchNotExhaustive": "error",
-    }
+    },
+    "workbench.activityBar.location": "top"
 }
