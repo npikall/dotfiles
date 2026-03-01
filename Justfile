@@ -2,8 +2,8 @@
 _default:
     @just --list
 
-alias list := list-extensions
-alias install := install-extensions
+alias xl := ext-list
+alias xi := ext-install
 
 home := home_directory()
 config_dir := config_directory()
@@ -82,14 +82,14 @@ stow: && base extras
     stow bash -t "{{ home }}" --adopt
 
 # Install all extensions saved in vscode-extensions.txt
-[group("vscode")]
-install-extensions:
+[group("vscode-extensions")]
+ext-install:
     while read -r line; do \
     echo "install $line"; \
     code --install-extension "$line"; \
     done < vscode-extensions.txt
 
 # List all vscode extensions and write them in the extensions file
-[group("vscode")]
-list-extensions:
+[group("vscode-extensions")]
+ext-list:
     code --list-extensions > vscode-extensions.txt
