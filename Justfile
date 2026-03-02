@@ -91,5 +91,5 @@ ext-install:
 
 # List all vscode extensions and write them in the extensions file
 [group("vscode-extensions")]
-ext-list:
-    code --list-extensions > vscode-extensions.txt
+ext-list file="vscode-extensions.txt":
+    code --list-extensions > {{ file }}
