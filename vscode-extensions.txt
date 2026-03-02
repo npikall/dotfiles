@@ -5,9 +5,11 @@ charliermarsh.ruff
 docker.docker
 esbenp.prettier-vscode
 github.copilot-chat
+github.vscode-github-actions
 golang.go
 gruntfuggly.todo-tree
 mechatroner.rainbow-csv
+mermaidchart.vscode-mermaid-chart
 ms-azuretools.vscode-containers
 ms-azuretools.vscode-docker
 ms-python.debugpy
@@ -29,9 +31,11 @@ njpwerner.autodocstring
 quarto.quarto
 redhat.vscode-yaml
 rust-lang.rust-analyzer
+samuelcolvin.jinjahtml
 tamasfe.even-better-toml
 tomoki1207.pdf
 vscode-icons-team.vscode-icons
 vscodevim.vim
 waderyan.gitblame
+wholroyd.jinja
 zainchen.json
