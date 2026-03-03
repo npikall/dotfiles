@@ -502,14 +502,6 @@ require('lazy').setup({
         python = { 'ruff' },
         typst = { 'typstyle' },
       },
-      formatters = {
-        typstyle = {
-          prepend_args = { '--line-width', '100', '--wrap-text' },
-        },
-        ruff = {
-          prepend_args = { '--line-width', '88' },
-        },
-      },
     },
   },
 
