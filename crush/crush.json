@@ -1,0 +1,36 @@
+{
+  "$schema": "https://charm.land/crush.json",
+  "providers": {
+    "aqueduct": {
+      "type": "openai-compat",
+      "name": "TU Wien Aqueduct",
+      "base_url": "https://aqueduct-staging.ai.datalab.tuwien.ac.at/v1",
+      "api_key": "$AQUEDUCT_API_KEY",
+      "models": [
+        {
+          "id": "qwen-coder-30b",
+          "name": "Qwen Coder 30B",
+          "context_window": 16384,
+          "default_max_tokens": 1024
+        },
+        {
+          "id": "mistral-small-3.2-24b",
+          "name": "Mistral Small 3.2 24B",
+          "context_window": 16384,
+          "default_max_tokens": 4096
+        }
+      ]
+    }
+  },
+  "models": {
+    "large": {
+      "provider": "aqueduct",
+      "model": "qwen-coder-30b"
+    },
+
+    "small": {
+      "provider": "aqueduct",
+      "model": "mistral-small-3.2-24b"
+    }
+  }
+}
