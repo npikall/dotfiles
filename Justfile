@@ -61,6 +61,11 @@ yazi:
 zellij:
     stow zellij -t "{{ home }}" --adopt
 
+# stow only crush
+[group("package")]
+crush:
+    stow crush -t "{{ config_dir }}/crush" --adopt
+
 # Install only extra configurations
 [group("bundle")]
 extras: cobra rustfmt scripts
