@@ -9,6 +9,7 @@ case $- in
 esac
 
 eval "$(starship init bash)"
+eval "$(zoxide init bash)"
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -97,6 +98,8 @@ alias bat='batcat'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias ve='source .venv/bin/activate'
 alias pomo='$HOME/scripts/pomo.sh'
+alias templ='$HOME/scripts/copier.sh'
+alias gc='$HOME/scripts/bare-clone.sh'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -127,6 +130,7 @@ fi
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
+export EDITOR="nvim"
 function y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
     yazi "$@" --cwd-file="$tmp"
@@ -164,3 +168,4 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
