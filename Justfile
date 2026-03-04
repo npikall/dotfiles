@@ -66,6 +66,11 @@ zellij:
 crush:
     stow crush -t "{{ config_dir }}/crush" --adopt
 
+# stow only worktrunk
+[group("package")]
+worktrunk:
+    stow worktrunk -t "{{ home }}" --adopt
+
 # Install only extra configurations
 [group("bundle")]
 extras: cobra rustfmt scripts
