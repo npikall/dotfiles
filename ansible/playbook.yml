@@ -1,0 +1,234 @@
+---
+- name: Bootstrap development environment
+  hosts: all
+  become: false
+
+  vars:
+    dotfiles_repo: "https://github.com/npikall/.dotfiles"
+    dotfiles_dest: "{{ ansible_env.HOME }}/.dotfiles"
+    local_bin: "{{ ansible_env.HOME }}/.local/bin"
+    local_dir: "{{ ansible_env.HOME }}/.local"
+
+  tasks:
+
+    # ── Prerequisites ───────────────────────────────────────────────────────────
+
+    - name: Install prerequisite packages (git, curl, unzip, stow)
+      ansible.builtin.package:
+        name:
+          - git
+          - curl
+          - unzip
+          - stow
+        state: present
+      become: true
+
+    - name: Ensure ~/.local/bin exists
+      ansible.builtin.file:
+        path: "{{ local_bin }}"
+        state: directory
+        mode: "0755"
+
+    - name: Ensure ~/.local/bin is on PATH in .bashrc
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        regexp: 'export PATH="\$HOME/\.local/bin:\$PATH"'
+        line: 'export PATH="$HOME/.local/bin:$PATH"'
+        create: true
+
+    # ── uv ──────────────────────────────────────────────────────────────────────
+
+    - name: Check if uv is installed
+      ansible.builtin.stat:
+        path: "{{ local_bin }}/uv"
+      register: uv_stat
+
+    - name: Install uv via official install script
+      ansible.builtin.shell:
+        cmd: curl -LsSf https://astral.sh/uv/install.sh | sh
+      environment:
+        UV_INSTALL_DIR: "{{ local_bin }}"
+      when: not uv_stat.stat.exists
+
+    # ── just (via uv tool install) ───────────────────────────────────────────────
+
+    - name: Check if just is installed
+      ansible.builtin.stat:
+        path: "{{ local_bin }}/just"
+      register: just_stat
+
+    - name: Install just via uv tool
+      ansible.builtin.command:
+        argv:
+          - "{{ local_bin }}/uv"
+          - tool
+          - install
+          - rust-just
+      when: not just_stat.stat.exists
+
+    # ── Neovim ──────────────────────────────────────────────────────────────────
+
+    - name: Check if nvim is installed
+      ansible.builtin.stat:
+        path: "{{ local_bin }}/nvim"
+      register: nvim_stat
+
+    - name: Install Neovim from GitHub release
+      when: not nvim_stat.stat.exists
+      block:
+        - name: Download Neovim tarball
+          ansible.builtin.get_url:
+            url: "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
+            dest: "/tmp/nvim-linux-x86_64.tar.gz"
+            mode: "0644"
+
+        - name: Extract Neovim to ~/.local
+          ansible.builtin.unarchive:
+            src: "/tmp/nvim-linux-x86_64.tar.gz"
+            dest: "{{ local_dir }}"
+            remote_src: true
+
+        - name: Symlink nvim to ~/.local/bin
+          ansible.builtin.file:
+            src: "{{ local_dir }}/nvim-linux-x86_64/bin/nvim"
+            dest: "{{ local_bin }}/nvim"
+            state: link
+            force: true
+
+        - name: Remove Neovim tarball
+          ansible.builtin.file:
+            path: "/tmp/nvim-linux-x86_64.tar.gz"
+            state: absent
+
+    # ── lazygit ─────────────────────────────────────────────────────────────────
+
+    - name: Check if lazygit is installed
+      ansible.builtin.stat:
+        path: "{{ local_bin }}/lazygit"
+      register: lazygit_stat
+
+    - name: Install lazygit from GitHub release
+      when: not lazygit_stat.stat.exists
+      block:
+        - name: Fetch latest lazygit release metadata
+          ansible.builtin.uri:
+            url: "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
+            headers:
+              Accept: "application/vnd.github.v3+json"
+            return_content: true
+          register: lazygit_release
+
+        - name: Set lazygit version fact
+          ansible.builtin.set_fact:
+            lazygit_version: "{{ lazygit_release.json.tag_name | regex_replace('^v', '') }}"
+
+        - name: Download lazygit tarball
+          ansible.builtin.get_url:
+            url: "https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+            dest: "/tmp/lazygit.tar.gz"
+            mode: "0644"
+
+        - name: Create lazygit extraction directory
+          ansible.builtin.file:
+            path: /tmp/lazygit_extract
+            state: directory
+            mode: "0755"
+
+        - name: Extract lazygit
+          ansible.builtin.unarchive:
+            src: "/tmp/lazygit.tar.gz"
+            dest: /tmp/lazygit_extract
+            remote_src: true
+
+        - name: Install lazygit binary
+          ansible.builtin.copy:
+            src: /tmp/lazygit_extract/lazygit
+            dest: "{{ local_bin }}/lazygit"
+            mode: "0755"
+            remote_src: true
+
+        - name: Remove lazygit temp files
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: absent
+          loop:
+            - /tmp/lazygit.tar.gz
+            - /tmp/lazygit_extract
+
+    # ── yazi ────────────────────────────────────────────────────────────────────
+
+    - name: Check if yazi is installed
+      ansible.builtin.stat:
+        path: "{{ local_bin }}/yazi"
+      register: yazi_stat
+
+    - name: Install yazi from GitHub release
+      when: not yazi_stat.stat.exists
+      block:
+        - name: Fetch latest yazi release metadata
+          ansible.builtin.uri:
+            url: "https://api.github.com/repos/sxyazi/yazi/releases/latest"
+            headers:
+              Accept: "application/vnd.github.v3+json"
+            return_content: true
+          register: yazi_release
+
+        - name: Set yazi version fact
+          ansible.builtin.set_fact:
+            yazi_version: "{{ yazi_release.json.tag_name }}"
+
+        - name: Download yazi zip (musl for maximum compatibility)
+          ansible.builtin.get_url:
+            url: "https://github.com/sxyazi/yazi/releases/download/{{ yazi_version }}/yazi-x86_64-unknown-linux-musl.zip"
+            dest: "/tmp/yazi.zip"
+            mode: "0644"
+
+        - name: Create yazi extraction directory
+          ansible.builtin.file:
+            path: /tmp/yazi_extract
+            state: directory
+            mode: "0755"
+
+        - name: Extract yazi zip
+          ansible.builtin.unarchive:
+            src: "/tmp/yazi.zip"
+            dest: /tmp/yazi_extract
+            remote_src: true
+
+        - name: Install yazi binaries (yazi + ya)
+          ansible.builtin.copy:
+            src: "/tmp/yazi_extract/yazi-x86_64-unknown-linux-musl/{{ item }}"
+            dest: "{{ local_bin }}/{{ item }}"
+            mode: "0755"
+            remote_src: true
+          loop:
+            - yazi
+            - ya
+
+        - name: Remove yazi temp files
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: absent
+          loop:
+            - /tmp/yazi.zip
+            - /tmp/yazi_extract
+
+    # ── Dotfiles ─────────────────────────────────────────────────────────────────
+
+    - name: Check if dotfiles repo is already cloned
+      ansible.builtin.stat:
+        path: "{{ dotfiles_dest }}/.git"
+      register: dotfiles_stat
+
+    - name: Clone dotfiles repository
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_dest }}"
+        depth: 1
+      when: not dotfiles_stat.stat.exists
+
+    - name: Apply dotfiles via just stow
+      ansible.builtin.command:
+        cmd: "{{ local_bin }}/just stow"
+        chdir: "{{ dotfiles_dest }}"
+      changed_when: true
