@@ -39,7 +39,7 @@ You will need to install the following dependencies for a nice experience:
 - [`stow`][stow] to move the dotfiles from this repo to the targets
 - [`vscode`][vscode] a code editor (only for Jupyter Notebooks, instead of nvim)
 - [`yazi`][yazi] a terminal file manager written in rust
-- [`zoxide`] a smarter `cd` command
+- [`zoxide`][zoxide] a smarter `cd` command
 - [`zellij`][zellij] a easy to use terminal multiplexer
 
 ## Scripts
