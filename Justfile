@@ -9,6 +9,16 @@ home := home_directory()
 config_dir := config_directory()
 xdg_config_dir := if env('XDG_CONFIG_HOME', '') =~ '^/' { env('XDG_CONFIG_HOME') } else { home_directory() / '.config' }
 
+# stow only bash configs
+[group("shell")]
+bash:
+    stow bash -t "{{ home }}" --adopt
+
+# stow only zsh configs
+[group("shell")]
+zsh:
+    stow zsh -t "{{ home }}" --adopt
+
 # stow only lazygit [linux]
 [group("package")]
 [linux]
@@ -22,17 +32,17 @@ lazygit:
     stow lazygit -t "{{ config_dir }}/lazygit" --adopt
 
 # stow only cobra
-[group("package")]
+[group("extra")]
 cobra:
     stow cobra -t "{{ home }}" --adopt
 
 # stow only rustfmt
-[group("package")]
+[group("extra")]
 rustfmt:
     stow rustfmt -t "{{ home }}" --adopt
 
 # stow only scripts
-[group("package")]
+[group("extra")]
 scripts:
     stow scripts -t "{{ home }}" --adopt
 
@@ -62,34 +72,32 @@ zellij:
     stow zellij -t "{{ home }}" --adopt
 
 # stow only crush
-[group("package")]
+[group("extra")]
 crush:
     stow crush -t "{{ config_dir }}/crush" --adopt
 
 # stow only worktrunk
-[group("package")]
+[group("extra")]
 worktrunk:
     stow worktrunk -t "{{ home }}" --adopt
 
-# Install only extra configurations
-[group("bundle")]
+# Install only the extra configurations
+[group("bundles")]
 extras: cobra rustfmt scripts
 
-# Install only basic configurations
-[group("bundle")]
+# Install only the package configurations
+[group("bundles")]
 base: lazygit nvim starship yazi zellij
 
 # Install all configurations (base + extra + shell) [macos]
-[group("bundle")]
+[group("bundles")]
 [macos]
-stow: && base extras
-    stow zsh -t "{{ home }}" --adopt
+stow: zsh base extras
 
 # Install all configurations (base + extra + shell) [linux]
-[group("bundle")]
+[group("bundles")]
 [linux]
-stow: && base extras
-    stow bash -t "{{ home }}" --adopt
+stow: bash base extras
 
 # Install all extensions saved in vscode-extensions.txt
 [group("vscode-extensions")]
