@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 function templ() {
     local choice=$(gum choose "PyBootstrap" "TUCookbook" "None" --header "Choose a template.")

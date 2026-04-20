@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Pomodoro timer script for Linux Mint
 # Requires: timer (https://github.com/caarlos0/timer), gum (https://github.com/charmbracelet/gum), notify-send

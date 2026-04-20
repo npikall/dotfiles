@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Exit if tmux session already exists
 tmux has-session -t dev 2>/dev/null
