@@ -1,165 +1,157 @@
 "$schema" = 'https://starship.rs/config-schema.json'
+#credits: https://github.com/leonlonsdale/robbyrusselish/blob/main/starship.toml
+palette = "kanso"
 
 format = """
-$username\
+$character\
 $directory\
 $git_branch\
 $git_status\
-$fill\
-$c\
-$elixir\
-$elm\
-$golang\
-$haskell\
-$java\
-$julia\
-$nodejs\
-$nim\
-$rust\
-$scala\
-$conda\
 $python\
-$time\n  \
-[󱞪](fg:iris) \
-"""
+$nodejs\
+$rust\
+$golang"""
+add_newline = false
 
-palette = "rose-pine-moon"
-
-[palettes.rose-pine-moon]
-overlay = '#393552'
-love = '#eb6f92'
-gold = '#f6c177'
-rose = '#ea9a97'
-pine = '#3e8fb0'
-foam = '#9ccfd8'
-iris = '#c4a7e7'
+[character]
+success_symbol = "[➜](bold success)"
+error_symbol = "[➜](bold error)"
 
 [directory]
-format = "(fg:overlay)[ $path ]($style)[](fg:overlay) "
-style = "bg:overlay fg:pine"
-truncation_length = 2
-truncation_symbol = "…/"
-
-[directory.substitutions]
-Documents = "󰈙"
-Downloads = " "
-Music = " "
-Pictures = " "
-
-[fill]
-style = "fg:overlay"
-symbol = " "
+truncation_length = 1
+read_only = " 🔒"
+style = "directory"
 
 [git_branch]
-format = "[](fg:overlay)[ $symbol $branch ]($style)[](fg:overlay) "
-style = "bg:overlay fg:foam"
-symbol = ""
+symbol = "git"
+format = '[$symbol:\([$branch](branch)\)](symbol) '
 
 [git_status]
-disabled = false
-style = "bg:overlay fg:love"
-format = '[](fg:overlay)([$all_status$ahead_behind]($style))[](fg:overlay) '
-up_to_date = '[ ✓ ](bg:overlay fg:iris)'
-untracked = '[?\($count\)](bg:overlay fg:gold)'
-stashed = '[\$](bg:overlay fg:iris)'
-modified = '[!\($count\)](bg:overlay fg:gold)'
-renamed = '[»\($count\)](bg:overlay fg:iris)'
-deleted = '[✘\($count\)](style)'
-staged = '[++\($count\)](bg:overlay fg:gold)'
-ahead = '[⇡\(${count}\)](bg:overlay fg:foam)'
-diverged = '⇕[\[](bg:overlay fg:iris)[⇡\(${ahead_count}\)](bg:overlay fg:foam)[⇣\(${behind_count}\)](bg:overlay fg:rose)[\]](bg:overlay fg:iris)'
-behind = '[⇣\(${count}\)](bg:overlay fg:rose)'
-
-[time]
-disabled = true
-format = " [](fg:overlay)[ $time 󰴈 ]($style)[](fg:overlay)"
-style = "bg:overlay fg:rose"
-time_format = "%I:%M%P"
-use_12hr = true
-
-[username]
-disabled = false
-format = "[](fg:overlay)[ » $user ]($style)(fg:overlay)"
-show_always = true
-style_root = "bg:overlay fg:iris"
-style_user = "bg:overlay fg:iris"
-
-# Languages
-
-[c]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[elixir]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[elm]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[golang]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[haskell]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[java]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[julia]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[nodejs]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = "󰎙 "
-
-[nim]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = "󰆥 "
-
-[rust]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
-
-[scala]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = " "
+style = "status"
 
 [python]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$version ]($style)[](fg:overlay)"
-disabled = false
-symbol = ' '
+format = "[ $virtualenv ]($style) "
+style = "python"
 
-[conda]
-style = "bg:overlay fg:pine"
-format = " [](fg:overlay)[ $symbol$environment ]($style)[](fg:overlay)"
-disabled = false
-symbol = '🅒 '
+[nodejs]
+symbol = " "
+format = "[$symbol]($style) "
+style = "node"
+
+[rust]
+symbol = " "
+format = "[$symbol]($style) "
+style = "rust"
+
+[golang]
+symbol = " "
+format = "[$symbol]($style) "
+style = "go"
+
+[palettes.tokyonight]
+error = "#f7768e"
+success = "#9ece6a"
+directory = "#2ac3de"
+branch = "#f7768e"
+symbol = "#7dcfff"
+status = "#9d7cd8"
+python = "#565f89"
+node = "#73daca"
+rust = "#ff9e64"
+go = "#7aa2f7"
+
+[palettes.gruvbox]
+error = "#fb4934"
+success = "#b8bb26"
+directory = "#73daca"
+branch = "#fb4934"
+symbol = "#83a598"
+status = "#928374"
+python = "#fabd2f"
+node = "#83a598"
+rust = "#fe8019"
+go = "#83a598"
+
+[palettes.kanagawa]
+error = "#E46876"
+success = "#98BB6C"
+directory = "#7FB4CA"
+branch = "#E46876"
+symbol = "#7FB4CA"
+status = "#54546D"
+python = "#DCA561"
+node = "#98BB6C"
+rust = "#DCA561"
+go = "#7FB4CA"
+
+[palettes.catppuccin_mocha]
+error = "#F38BA8"
+success = "#A6E3A1"
+directory = "#89B4FA"
+branch = "#F38BA8"
+symbol = "#89B4FA"
+status = "#9399B2"
+python = "#F9E2AF"
+node = "#A6E3A1"
+rust = "F9E2AF"
+go = "#89B4FA"
+
+[palettes.darkplus]
+error = "#ff1212"
+success = "#4EC9B0"
+directory = "#569CD6"
+branch = "#FF6B6B"
+symbol = "#4EC9B0"
+status = "#C586C0"
+python = "#DCDCAA"
+go = "#9CDCFE"
+node = "#4EC9B0"
+rust = "#4EC9B0"
+
+[palettes.ayumirage]
+error = "#f28779"
+success = "#D5FF80"
+directory = "#FAD07B"
+branch = "#f28779"
+symbol = "#73D0FF"
+status = "#DFBFFF"
+python = "#DCDCAA"
+go = "#9CDCFE"
+node = "#4EC9B0"
+rust = "#4EC9B0"
+
+[palettes.everforestdark]
+error = "#E67E81"
+success = "#7EB98C"
+directory = "#DBBC7F"
+branch = "#E67E81"
+symbol = "#7FBBB3"
+status = "#D699B6"
+python = "#DBBC7F"
+node = "#7EB98C"
+rust = "#D699B6"
+go = "#7FBBB3"
+
+[palettes.github_dark]
+error = "#F25D5D"
+success = "#62D863"
+directory = "#8AB6D6"
+branch = "#F25D5D"
+symbol = "#8AB6D6"
+status = "#6C6C6C"
+python = "#FFD700"
+node = "#80B6F4"
+rust = "#D77B7B"
+go = "#3E8EDE"
+
+[palettes.kanso]
+error = "#c4746e"
+success = "#8a9a7b"
+directory = "#7FB4CA"
+branch = "#E46876"
+symbol = "#8ba4b0"
+status = "#938AA9"
+python = "#C4B28A"
+node = "#8ea4a2"
+rust = "#A292A3"
+go = "#7AA89F"
