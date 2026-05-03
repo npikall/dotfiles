@@ -2,6 +2,7 @@ plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 
 alias c="clear"
 alias vim="nvim"
+alias vi='nvim'
 alias ve="source .venv/bin/activate"
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias pomo='$HOME/scripts/pomo-mac.sh'
