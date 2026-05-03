@@ -71,6 +71,12 @@ yazi:
 zellij:
     stow zellij -t "{{ home }}" --adopt
 
+# stow only ghossty
+[group("extra")]
+[macos]
+ghostty:
+    stow ghostty -t "{{ home }}/Library/Application Support/com.mitchellh.ghostty" --adopt
+
 # stow only crush
 [group("extra")]
 crush:
