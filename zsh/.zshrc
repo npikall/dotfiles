@@ -1,9 +1,11 @@
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 
+alias ..='echo "cd .."; cd ..'
 alias c="clear"
 alias vim="nvim"
 alias vi='nvim'
-alias ve="source .venv/bin/activate"
+alias ve='echo "source .venv/bin/activate"; source .venv/bin/activate'
+alias de='echo "deactivate"; deactivate'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias pomo='$HOME/scripts/pomo-mac.sh'
 alias gi='lazygit'
