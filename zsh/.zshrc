@@ -36,3 +36,5 @@ _fix_cursor() { echo -ne '\e[2 q'; }
 precmd_functions+=(_fix_cursor)
 zle-line-init() { echo -ne '\e[2 q'; }
 zle -N zle-line-init
+fpath=(~/.zsh/completions $fpath)
+autoload -U compinit && compinit
