@@ -1,0 +1,32 @@
+{
+  "providers": {
+    "tuw-aqueduct": {
+      "baseUrl": "https://aqueduct.ai.datalab.tuwien.ac.at/",
+      "api": "openai-completions",
+      "compat": {
+        "thinkingFormat": "qwen-chat-template"
+      },
+      "apiKey": "tuw-aqueduct",
+      "models": [
+        {
+          "id": "coding",
+          "name": "Qwen main",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 128000,
+          "maxTokens": 32000,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "complete",
+          "name": "Qwen complete",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 128000,
+          "maxTokens": 16384,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    }
+  }
+}
