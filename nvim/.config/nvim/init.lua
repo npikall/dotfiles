@@ -433,6 +433,20 @@ do
         },
       },
     },
+    ruff = {
+      on_attach = function(client, bufnr)
+        client.server_capabilities.hoverProvider = false
+        vim.api.nvim_create_autocmd('BufWritePre', {
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.format {
+              async = false,
+              filter = function(c) return c.name == 'ruff' end,
+            }
+          end,
+        })
+      end,
+    },
   }
 
   vim.pack.add {
