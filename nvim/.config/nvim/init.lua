@@ -36,6 +36,7 @@ do
 
   -- NOTE: [[ Basic Keymaps ]]
   vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+  vim.keymap.set('n', '<leader>v', '<cmd>vsplit<CR>', { desc = 'New vertical split' })
 
   -- Diagnostic Config & Keymaps
   vim.diagnostic.config {
@@ -78,6 +79,9 @@ do
   -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
   -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
   -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+
+  -- NOTE: Custom Keymaps
+  vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<CR>', { desc = 'Restart the LSP' })
 
   -- NOTE: [[ Basic Autocommands ]]
   vim.api.nvim_create_autocmd('TextYankPost', {
@@ -217,6 +221,35 @@ do
   ---@diagnostic disable-next-line: duplicate-set-field
   statusline.section_location = function() return '%2l:%-2v' end
   --  Check out: https://github.com/nvim-mini/mini.nvim
+
+  -- Open Terminal panes better
+  vim.pack.add { gh 'akinsho/toggleterm.nvim' }
+  local toggleterm = require 'toggleterm'
+  toggleterm.setup {
+    size = function(term)
+      if term.direction == 'horizontal' then
+        return 10
+      elseif term.direction == 'vertical' then
+        return math.floor(vim.o.columns / 2)
+      end
+    end,
+  }
+
+  vim.keymap.set('n', '<leader>h', function() toggleterm.toggle(nil, 10, nil, 'horizontal') end, { desc = 'Toggle horizontal Terminal' })
+  vim.keymap.set('t', '<leader>H', function() toggleterm.toggle() end, { desc = 'Close horizontal Terminal from Terminal Mode' })
+  vim.keymap.set('n', '<leader>V', function() toggleterm.toggle(nil, nil, nil, 'vertical') end)
+  vim.keymap.set('t', '<leader>V', function() toggleterm.toggle() end)
+
+  local Terminal = require('toggleterm.terminal').Terminal
+  local lazygit = Terminal:new {
+    cmd = 'lazygit',
+    hidden = true,
+    direction = 'float',
+    float_opts = {
+      border = 'curved',
+    },
+  }
+  vim.keymap.set('n', '<leader>gi', function() lazygit:toggle() end, { desc = 'Toggle lazygit' })
 end
 
 -- ============================================================
