@@ -12,14 +12,14 @@ if vim.g.have_nerd_font then
 end
 
 vim.pack.add(plugins)
-
-vim.keymap.set('n', '<C-n>', '<Cmd>Neotree reveal<CR>', { desc = 'NeoTree reveal', silent = true })
+vim.keymap.set('n', '<C-n>', '<Cmd>Neotree filesystem reveal left toggle=true<CR>', {})
+-- vim.keymap.set('n', '<C-n>', '<Cmd>Neotree reveal<CR>', { desc = 'NeoTree reveal', silent = true })
 
 require('neo-tree').setup {
   filesystem = {
     window = {
       mappings = {
-        ['<C-n>'] = 'close_window',
+        ['\\'] = 'close_window',
       },
     },
   },
