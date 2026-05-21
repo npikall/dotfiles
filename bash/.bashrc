@@ -206,3 +206,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
