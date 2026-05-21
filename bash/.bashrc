@@ -10,6 +10,7 @@ esac
 
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
+eval "$(fzf --bash)"
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -90,16 +91,21 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias c='clear'
+alias ..='echo "cd .."; cd ..'
 alias bat='batcat'
+alias c='clear'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
-alias ve='source .venv/bin/activate'
+alias gc='$HOME/scripts/bare-clone.sh'
+alias gi='lazygit'
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
 alias pomo='$HOME/scripts/pomo.sh'
 alias templ='$HOME/scripts/copier.sh'
-alias gc='$HOME/scripts/bare-clone.sh'
+alias ve='echo "source .venv/bin/activate"; source .venv/bin/activate'
+alias de='echo "deactivate"; deactivate'
+alias vi='nvim'
+alias vim='nvim'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
