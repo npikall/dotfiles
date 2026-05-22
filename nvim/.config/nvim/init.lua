@@ -81,7 +81,7 @@ do
   -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
   -- NOTE: Custom Keymaps
-  vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<CR>', { desc = 'Restart the LSP' })
+  vim.keymap.set('n', '<leader>lr', '<cmd>lsp restart<CR>', { desc = 'Restart the LSP' })
 
   -- NOTE: [[ Basic Autocommands ]]
   vim.api.nvim_create_autocmd('TextYankPost', {
@@ -270,11 +270,21 @@ do
   vim.pack.add(telescope_plugins)
 
   require('telescope').setup {
-    -- defaults = {
-    --   mappings = {
-    --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-    --   },
-    -- },
+    defaults = {
+      vimgrep_arguments = {
+        'rg',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case',
+        '--no-ignore-vcs',
+      },
+      --   mappings = {
+      --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+      --   },
+    },
     -- pickers = {}
     extensions = {
       ['ui-select'] = { require('telescope.themes').get_dropdown() },
@@ -400,6 +410,7 @@ do
     -- rust_analyzer = {},
     -- ts_ls = {},
     stylua = {}, -- Used to format Lua code
+    markdownlint = {},
     -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
       on_init = function(client)
@@ -482,6 +493,8 @@ do
         lua = true,
         python = true,
         go = true,
+        json = true,
+        markdown = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
         return { timeout_ms = 500 }
@@ -497,6 +510,8 @@ do
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
       python = { 'ruff' },
+      json = { 'prettier' },
+      markdown = { 'markdownlint' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -635,7 +650,7 @@ do
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- require 'custom.plugins'
+  require 'custom.plugins'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
