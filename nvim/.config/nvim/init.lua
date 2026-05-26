@@ -406,6 +406,7 @@ do
     -- clangd = {},
     gopls = {},
     ty = {},
+    tinymist = {},
     -- pyright = {},
     -- rust_analyzer = {},
     -- ts_ls = {},
