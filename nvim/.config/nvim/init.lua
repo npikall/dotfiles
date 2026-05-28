@@ -405,6 +405,7 @@ do
   local servers = {
     -- clangd = {},
     gopls = {},
+    golangci_lint_ls = {},
     ty = {},
     tinymist = {},
     -- pyright = {},
