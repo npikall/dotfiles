@@ -1,32 +1,42 @@
 #!/usr/bin/env bash
 
 function gc() {
-    local user repo
+    local server user repo
 
-    if [ $# -eq 2 ]; then
-        # Use provided arguments
+    # Determine server based on first argument
+    if [ "$1" = "gl" ] || [ "$1" = "gitlab" ]; then
+        server="git@gitlab.com"
+        shift # Remove server from args
+    elif [[ "$1" == *"@"* ]]; then
+        server="$1" # It's already a full URL
+        shift
+    else
+        server="git@github.com" # Default to GitHub
+    fi
+
+    # Get user and repo from remaining arguments
+    if [ $# -ge 2 ]; then
         user=$1
         repo=$2
+    elif [ $# -eq 1 ]; then
+        user=$1
+        repo=$(gum input --prompt "Repository name: " --placeholder "repo-name")
     else
-        # Prompt for input
+        # Interactive prompts
         if command -v gum &>/dev/null; then
-            user=$(gum input --prompt "GitHub username: " --placeholder "username")
+            user=$(gum input --prompt "GitHub/GitLab username: " --placeholder "username")
             repo=$(gum input --prompt "Repository name: " --placeholder "repo-name")
         else
-            [ -z "$user" ] && read -p "GitHub username: " user
-            [ -z "$repo" ] && read -p "Repository name: " repo
+            read -p "GitHub/GitLab username: " user
+            read -p "Repository name: " repo
         fi
     fi
 
-    # Validate inputs
-    if [ -z "$user" ] || [ -z "$repo" ]; then
-        echo "Error: Both username and repository are required."
-        return 1
-    fi
+    # Remove .git from repo name if present
+    repo="${repo%.git}"
 
-    # Clone the repository as bare
-    echo "Cloning ${user}/${repo}..."
-    git clone --bare "git@github.com:${user}/${repo}.git" "${repo}/.git"
+    echo "Cloning ${server}:${user}/${repo}.git -> ${repo}/.git"
+    git clone --bare "${server}:${user}/${repo}.git" "${repo}/.git"
 }
 
 gc "$@"
