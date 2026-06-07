@@ -25,7 +25,6 @@ eval "$(fzf --zsh)"
 
 chpwd() {
     if [ -f ".pre-commit-config.yaml" ] && [ ! -f ".git/hooks/pre-commit" ]; then
-        echo "Installing hooks with prek..."
         prek install
     fi
 }
