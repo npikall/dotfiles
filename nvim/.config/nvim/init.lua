@@ -515,6 +515,7 @@ do
       json = { 'prettier' },
       markdown = { 'markdownlint' },
       typst = { 'typstyle' },
+      bibtex = { 'bibtex-tidy' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -653,7 +654,7 @@ do
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  require 'custom.plugins'
+  require 'custom.plugins.preview'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`

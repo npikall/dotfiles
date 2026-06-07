@@ -3,4 +3,4 @@ vim.pack.add {
 }
 
 require('typst-preview').setup {}
-vim.keymap.set('n', '<leader>p', '<Cmd>TypstPreviewToggle<cr>')
+vim.keymap.set('n', '<leader>p', '<Cmd>TypstPreviewToggle<CR>')
