@@ -43,6 +43,12 @@ eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 eval "$(fzf --bash)"
 
+z() {
+    __zoxide_z "$@" && if [ -f ".pre-commit-config.yaml" ] && [ ! -f ".git/hooks/pre-commit" ]; then
+        prek install
+    fi
+}
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
