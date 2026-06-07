@@ -23,6 +23,13 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(fzf --zsh)"
 
+chpwd() {
+    if [ -f ".pre-commit-config.yaml" ] && [ ! -f ".git/hooks/pre-commit" ]; then
+        echo "Installing hooks with prek..."
+        prek install
+    fi
+}
+
 export GPG_TTY=$(tty)
 
 
