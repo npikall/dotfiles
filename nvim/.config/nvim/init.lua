@@ -82,6 +82,15 @@ do
 
   -- NOTE: Custom Keymaps
   vim.keymap.set('n', '<leader>lr', '<cmd>lsp restart<CR>', { desc = 'Restart the LSP' })
+  vim.keymap.set('n', '<leader>er', function()
+    local line = vim.api.nvim_get_current_line()
+    local indent = line:match '^(%s*)' -- preserve current indentation
+    local snippet = indent .. 'if err != nil {\n' .. indent .. '\treturn err\n' .. indent .. '}'
+
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    vim.api.nvim_buf_set_lines(0, row, row, false, vim.split(snippet, '\n'))
+    vim.api.nvim_win_set_cursor(0, { row + 2, #indent + 1 }) -- place cursor on "return err"
+  end, { desc = 'Insert Go error handling block' })
 
   -- NOTE: [[ Basic Autocommands ]]
   vim.api.nvim_create_autocmd('TextYankPost', {

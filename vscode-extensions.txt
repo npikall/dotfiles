@@ -4,10 +4,10 @@ bierner.markdown-preview-github-styles
 charliermarsh.ruff
 docker.docker
 esbenp.prettier-vscode
-github.copilot-chat
 github.vscode-github-actions
 golang.go
 gruntfuggly.todo-tree
+lextudio.restructuredtext
 mechatroner.rainbow-csv
 mermaidchart.vscode-mermaid-chart
 ms-azuretools.vscode-containers
