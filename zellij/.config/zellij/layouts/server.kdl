@@ -5,7 +5,7 @@ layout {
 	    }
 	    pane
 	    pane size=1 borderless=true {
-		plugin location="status-bar"
+		// plugin location="status-bar"
 	    }
 	}
 	tab name="server" {
@@ -14,7 +14,16 @@ layout {
 	    }
 	    pane
 	    pane size=1 borderless=true {
-		plugin location="status-bar"
+		// plugin location="status-bar"
+	    }
+	}
+	tab name="other" {
+	    pane size=1 borderless=true {
+		plugin location="tab-bar"
+	    }
+	    pane
+	    pane size=1 borderless=true {
+		// plugin location="status-bar"
 	    }
 	}
 }
