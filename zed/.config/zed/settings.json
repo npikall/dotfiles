@@ -1,0 +1,77 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "diagnostics": {
+    "inline": {
+      "enabled": true
+    }
+  },
+  "inlay_hints": {
+    "show_background": true
+  },
+  "semantic_tokens": "combined",
+  "languages": {
+    "Go": {
+      "language_servers": ["gopls", "golangci-lint"],
+    },
+    "Python": {
+      "language_servers": ["ty", "ruff"],
+      "inlay_hints": {
+        "enabled": true,
+      },
+    },
+  },
+  "lsp": {
+    "golangci-lint": {
+      "initialization_options": {
+        "command": [
+          "golangci-lint",
+          "run",
+          "--output.json.path",
+          "stdout",
+          "--show-stats=false",
+          "--output.text.path=",
+        ],
+      },
+    },
+    "gopls": {
+      "initialization_options": {
+        "codelenses": {
+          "test": true,
+          "generate": true,
+          "regenerate_cgo": true,
+          "tidy": true,
+          "upgrade_dependency": true,
+          "vendor": true,
+        },
+      },
+    },
+  },
+  "relative_line_numbers": "disabled",
+  "vim": {
+    "toggle_relative_line_numbers": true,
+  },
+  "project_panel": {
+    "dock": "right",
+  },
+  "proxy": "",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Material Icon Theme",
+    "dark": "Material Icon Theme",
+  },
+  "vim_mode": true,
+  "ui_font_size": 16,
+  "buffer_font_size": 17.0,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "GitHub Dark Dimmed",
+  },
+}

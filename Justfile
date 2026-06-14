@@ -71,6 +71,11 @@ yazi:
 zellij:
     stow zellij -t "{{ home }}" --adopt
 
+# stow only zed
+[group("package")]
+zed:
+    stow zed -t "{{ home }}" --adopt
+
 # stow only ghossty
 [group("extra")]
 [macos]
