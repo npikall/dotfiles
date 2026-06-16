@@ -1,42 +1,48 @@
 #!/usr/bin/env bash
 
-function gc() {
-    local server user repo
+set -e
 
-    # Determine server based on first argument
-    if [ "$1" = "gl" ] || [ "$1" = "gitlab" ]; then
-        server="git@gitlab.com"
-        shift # Remove server from args
-    elif [[ "$1" == *"@"* ]]; then
-        server="$1" # It's already a full URL
-        shift
-    else
-        server="git@github.com" # Default to GitHub
+function gbc() {
+    local url="$1"
+
+    if [ "$url" = "-h" ] || [ "$url" = "--help" ]; then
+        cat <<'EOF'
+Usage: gbc <git-url>
+
+Clone a repo as a bare repo set up for git worktrees.
+
+Example:
+  gbc git@github.com:user/repo.git
+
+Result:
+  repo/.git      bare repository
+  repo/<branch>  worktree checked out to the default branch
+EOF
+        return 0
     fi
 
-    # Get user and repo from remaining arguments
-    if [ $# -ge 2 ]; then
-        user=$1
-        repo=$2
-    elif [ $# -eq 1 ]; then
-        user=$1
-        repo=$(gum input --prompt "Repository name: " --placeholder "repo-name")
-    else
-        # Interactive prompts
-        if command -v gum &>/dev/null; then
-            user=$(gum input --prompt "GitHub/GitLab username: " --placeholder "username")
-            repo=$(gum input --prompt "Repository name: " --placeholder "repo-name")
-        else
-            read -p "GitHub/GitLab username: " user
-            read -p "Repository name: " repo
-        fi
+    if [ -z "$url" ]; then
+        echo "Usage: gbc <git-url>  (gbc --help for details)" >&2
+        return 1
     fi
 
-    # Remove .git from repo name if present
-    repo="${repo%.git}"
+    local reponame
+    reponame=$(basename "${url%/}")
+    reponame="${reponame%.git}"
 
-    echo "Cloning ${server}:${user}/${repo}.git -> ${repo}/.git"
-    git clone --bare "${server}:${user}/${repo}.git" "${repo}/.git"
+    if [ -e "$reponame" ]; then
+        echo "Error: '${reponame}' already exists." >&2
+        return 1
+    fi
+
+    git clone --bare "$url" "${reponame}/.git"
+
+    local branch
+    branch=$(git --git-dir="${reponame}/.git" symbolic-ref --short HEAD)
+
+    git --git-dir="${reponame}/.git" worktree add "${reponame}/${branch}" "${branch}"
+
+    echo "Ready: ${reponame}/${branch}"
 }
 
-gc "$@"
+gbc "$@"
