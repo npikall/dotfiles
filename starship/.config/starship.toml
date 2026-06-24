@@ -1,12 +1,15 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 #credits: https://github.com/leonlonsdale/robbyrusselish/blob/main/starship.toml
 palette = "kanso"
+command_timeout = 1000
 
 format = """
 $character\
 $directory\
-$git_branch\
-$git_status\
+${custom.git_branch}\
+${custom.git_status}\
+${custom.jj_branch}\
+${custom.jj_status}\
 $python\
 $nodejs\
 $rust\
@@ -23,22 +26,69 @@ read_only = " 🔒"
 style = "directory"
 
 [git_branch]
-symbol = "git"
-format = '[$symbol:\([ $branch](branch)\)](symbol) '
+disabled = true
 
 [git_status]
-style = "status"
-conflicted = "󰞇${count}"
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇡${ahead_count}⇣${behind_count}"
-up_to_date = ""
-untracked = "…${count}"
-stashed = ""
-modified = "${count}"
-staged = "+${count}"
-renamed = "»${count}"
-deleted = "✘${count}"
+disabled = true
+
+[custom.git_branch]
+command = 'git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null'
+when = 'git rev-parse --git-dir >/dev/null 2>&1 && ! jj root --quiet >/dev/null 2>&1'
+format = '[git:\(](symbol)[$output](branch)[\)](symbol) '
+
+[custom.git_status]
+command = '''
+s=""
+p=$(git status --porcelain 2>/dev/null)
+ahead=$(git rev-list "@{u}.." 2>/dev/null | wc -l | tr -d ' ')
+behind=$(git rev-list "..@{u}" 2>/dev/null | wc -l | tr -d ' ')
+conflicted=$(echo "$p" | grep -c "^UU\|^AA\|^DD" 2>/dev/null || true)
+untracked=$(echo "$p" | grep -c "^??" 2>/dev/null || true)
+modified=$(echo "$p" | grep -c "^ [MD]" 2>/dev/null || true)
+staged=$(echo "$p" | grep -c "^[MARCD] " 2>/dev/null || true)
+renamed=$(echo "$p" | grep -c "^.R\|^R " 2>/dev/null || true)
+deleted=$(echo "$p" | grep -c "^.D\|^D " 2>/dev/null || true)
+[ "$conflicted" -gt 0 ] 2>/dev/null && s="${s}󰞇${conflicted}"
+[ "$ahead" -gt 0 ] 2>/dev/null && s="${s}⇡${ahead}"
+[ "$behind" -gt 0 ] 2>/dev/null && s="${s}⇣${behind}"
+[ "$untracked" -gt 0 ] 2>/dev/null && s="${s}…${untracked}"
+[ "$modified" -gt 0 ] 2>/dev/null && s="${s}$(printf '\xef\x90\x92')${modified}"
+[ "$staged" -gt 0 ] 2>/dev/null && s="${s}+${staged}"
+[ "$renamed" -gt 0 ] 2>/dev/null && s="${s}»${renamed}"
+[ "$deleted" -gt 0 ] 2>/dev/null && s="${s}✘${deleted}"
+printf '%s' "$s"
+'''
+when = 'git rev-parse --git-dir >/dev/null 2>&1 && ! jj root --quiet >/dev/null 2>&1'
+format = '[\[$output\]](status) '
+
+[custom.jj_branch]
+command = '''
+bookmark=$(jj log -r @ --no-graph -T 'bookmarks' 2>/dev/null | tr -d '*' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+change_id=$(jj log -r @ --no-graph -T 'change_id.shortest()' 2>/dev/null) || exit 1
+ref="${bookmark:-$change_id}"
+printf '%s' "$ref"
+'''
+when = 'jj root --quiet >/dev/null 2>&1'
+format = '[jj:\(](jj_symbol)[$output](branch)[\)](jj_symbol) '
+
+[custom.jj_status]
+command = '''
+s=""
+unpushed_revset='((trunk() & ~root() & ::@-)::@-) ~ (trunk() & ~root() & ::@-)'
+unpushed_count=$(jj log -r "$unpushed_revset" --no-graph --ignore-working-copy -T 'commit_id ++ "\n"' 2>/dev/null | wc -l | tr -d ' ')
+if jj status 2>/dev/null | grep -q "Working copy changes:"; then
+  wc_status=""
+elif jj log -r @ --no-graph -T 'conflict' 2>/dev/null | grep -q "true"; then
+  wc_status="󰞇"
+else
+  wc_status=""
+fi
+[ "$unpushed_count" -gt 0 ] 2>/dev/null && s="⇡${unpushed_count}"
+s="${s}${wc_status}"
+[ -n "$s" ] && printf '%s' "$s"
+'''
+when = 'jj root --quiet >/dev/null 2>&1'
+format = '[$output](status) '
 
 [python]
 format = "[ $virtualenv ]($style) "
@@ -65,6 +115,7 @@ success = "#9ece6a"
 directory = "#2ac3de"
 branch = "#f7768e"
 symbol = "#7dcfff"
+jj_symbol = "#e0af68"
 status = "#9d7cd8"
 python = "#565f89"
 node = "#73daca"
@@ -77,6 +128,7 @@ success = "#b8bb26"
 directory = "#73daca"
 branch = "#fb4934"
 symbol = "#83a598"
+jj_symbol = "#fabd2f"
 status = "#928374"
 python = "#fabd2f"
 node = "#83a598"
@@ -89,6 +141,7 @@ success = "#98BB6C"
 directory = "#7FB4CA"
 branch = "#E46876"
 symbol = "#7FB4CA"
+jj_symbol = "#DCA561"
 status = "#54546D"
 python = "#DCA561"
 node = "#98BB6C"
@@ -101,6 +154,7 @@ success = "#A6E3A1"
 directory = "#89B4FA"
 branch = "#F38BA8"
 symbol = "#89B4FA"
+jj_symbol = "#FAB387"
 status = "#9399B2"
 python = "#F9E2AF"
 node = "#A6E3A1"
@@ -113,6 +167,7 @@ success = "#4EC9B0"
 directory = "#569CD6"
 branch = "#FF6B6B"
 symbol = "#4EC9B0"
+jj_symbol = "#CE9178"
 status = "#C586C0"
 python = "#DCDCAA"
 go = "#9CDCFE"
@@ -125,6 +180,7 @@ success = "#D5FF80"
 directory = "#FAD07B"
 branch = "#f28779"
 symbol = "#73D0FF"
+jj_symbol = "#FFB454"
 status = "#DFBFFF"
 python = "#DCDCAA"
 go = "#9CDCFE"
@@ -137,6 +193,7 @@ success = "#7EB98C"
 directory = "#DBBC7F"
 branch = "#E67E81"
 symbol = "#7FBBB3"
+jj_symbol = "#E69875"
 status = "#D699B6"
 python = "#DBBC7F"
 node = "#7EB98C"
@@ -149,6 +206,7 @@ success = "#62D863"
 directory = "#8AB6D6"
 branch = "#F25D5D"
 symbol = "#8AB6D6"
+jj_symbol = "#E3B341"
 status = "#6C6C6C"
 python = "#FFD700"
 node = "#80B6F4"
@@ -161,6 +219,7 @@ success = "#8a9a7b"
 directory = "#7FB4CA"
 branch = "#E46876"
 symbol = "#8ba4b0"
+jj_symbol = "#D4A76A"
 status = "#938AA9"
 python = "#C4B28A"
 node = "#8ea4a2"
