@@ -153,9 +153,12 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # git
 alias gst='git status'
 alias s='git status'
-alias ga='git add -u'
+alias sw='git switch'
+alias ga='git add'
 alias gaa='git add -A'
-alias gc='git commit'
+gc() {
+  git commit -m "$*"
+}
 alias gcm='git checkout main'
 alias gd='git diff'
 alias gdc='git diff --cached'
@@ -167,7 +170,7 @@ alias pu='git pull'
 alias pur='git pull --rebase'
 alias fe='git fetch'
 alias re='git rebase'
-alias lr='git l -30'
+alias lr='git l -10'
 alias cdr='cd $(git rev-parse --show-toplevel)' # cd to git Root
 alias hs='git rev-parse --short HEAD'
 # Alias definitions.
