@@ -1,5 +1,6 @@
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 
+alias aliases="grep -E '^alias ' ~/.zshrc | sed 's/alias //'"
 alias ..='echo "cd .."; cd ..'
 alias c="clear"
 alias vim="nvim"
@@ -10,6 +11,31 @@ alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias pomo='$HOME/scripts/pomo-mac.sh'
 alias gi='lazygit'
 alias ll='ls -alF'
+
+
+# git
+alias gst='git status'
+alias s='git status'
+alias sw='git switch'
+alias ga='git add'
+alias gaa='git add -A'
+gc() {
+  git commit -m "$*"
+}
+alias gcm='git checkout main'
+alias gd='git diff'
+alias gdc='git diff --cached'
+# [c]heck [o]ut
+alias co='git checkout'
+alias up='git push'
+alias upf='git push --force'
+alias pu='git pull'
+alias pur='git pull --rebase'
+alias fe='git fetch'
+alias re='git rebase'
+alias lr='git l -10'
+alias cdr='cd $(git rev-parse --show-toplevel)' # cd to git Root
+alias hs='git rev-parse --short HEAD'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
