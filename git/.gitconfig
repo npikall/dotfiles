@@ -1,6 +1,9 @@
+[user]
+	name = npikall
+	email = nikolas.pikall@gmail.com
 [init]
-	default = main
-	defaultBranch = main
+	default = master
+	defaultbranch = master
 [core]
 	editor = nvim
 [gpg]
@@ -9,3 +12,10 @@
 	gpgsign = true
 [merge]
 	tool = nvimdiff3
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[pull]
+	rebase = true
