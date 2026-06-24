@@ -128,6 +128,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
+alias aliases="grep -E '^alias ' ~/.bashrc | sed 's/alias //'"
 alias ..='echo "cd .."; cd ..'
 alias bat='batcat'
 alias c='clear'
@@ -152,6 +153,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # git
 alias gst='git status'
 alias s='git status'
+alias ga='git add -u'
 alias gaa='git add -A'
 alias gc='git commit'
 alias gcm='git checkout main'
