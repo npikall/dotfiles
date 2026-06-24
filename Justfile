@@ -75,6 +75,11 @@ zellij:
 git *args:
     stow git -t "{{ home }}" --adopt {{ args }}
 
+# stow only pi
+[group("package")]
+pi *args:
+    stow pi -t "{{ home }}" --adopt {{ args }}
+
 # stow only zed
 [group("package")]
 zed:
