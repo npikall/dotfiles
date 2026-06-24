@@ -70,6 +70,10 @@ yazi:
 [group("package")]
 zellij:
     stow zellij -t "{{ home }}" --adopt
+# stow only git config
+[group("package")]
+git *args:
+    stow git -t "{{ home }}" --adopt {{ args }}
 
 # stow only zed
 [group("package")]
@@ -98,7 +102,7 @@ extras: cobra rustfmt scripts
 
 # Install only the package configurations
 [group("bundles")]
-base: lazygit nvim starship yazi zellij
+base: lazygit nvim starship yazi zellij git
 
 # Install all configurations (base + extra + shell) [macos]
 [group("bundles")]
