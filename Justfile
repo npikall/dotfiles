@@ -119,6 +119,14 @@ stow: zsh base extras
 [linux]
 stow: bash base extras
 
+# Uninstall all extensions saved in vscode-extensions.txt
+[group("vscode-extensions")]
+ext-uninstall:
+    while read -r line; do \
+    echo "uninstall $line"; \
+    code --uninstall-extension "$line"; \
+    done < vscode-extensions.txt
+
 # Install all extensions saved in vscode-extensions.txt
 [group("vscode-extensions")]
 ext-install:
