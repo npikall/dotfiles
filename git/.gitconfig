@@ -1,6 +1,26 @@
 [user]
 	name = npikall
 	email = nikolas.pikall@gmail.com
+[alias]
+	# Taken from Thorsten Ball: https://github.com/mrnugget/dotfiles/blob/29c5eab8a629985464dd05c0b8289da5a4c28674/gitconfig
+	co = checkout
+	st = status
+	rh = reset HEAD
+	rhh = reset --hard HEAD
+	pu = pull
+	up = push
+
+	l = "!. ~/.githelpers && pretty_git_log"
+	la = "!git l --all"
+	lr = "!git l -30"
+	lra = "!git lr --all"
+	lg = "!git l -G $1 -- $2"
+	feature = !sh -c 'git checkout --no-track -b $0 origin/main'
+
+	ruf = "!. ~/.githelpers && remove_untracked_files"
+	tree = log --oneline --decorate --graph
+	sup = "!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`"
+
 [init]
 	default = master
 	defaultbranch = master
