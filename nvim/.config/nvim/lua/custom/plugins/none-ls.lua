@@ -12,7 +12,6 @@ return {
         'prettier',
         'shfmt',
         'stylua',
-        'typstyle',
         'gopls',
         'golangci_lint_ls',
         'ty',
@@ -32,7 +31,7 @@ return {
       null_ls.builtins.formatting.stylua,
       null_ls.builtins.formatting.prettier.with { filetypes = { 'json', 'yaml', 'markdown', 'toml' } },
       null_ls.builtins.formatting.shfmt.with { args = { '-i', '4' } },
-      null_ls.builtins.formatting.typstyle,
+
     }
 
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
@@ -44,9 +43,7 @@ return {
           vim.api.nvim_create_autocmd('BufWritePre', {
             group = augroup,
             buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format { async = false }
-            end,
+            callback = function() vim.lsp.buf.format { async = false } end,
           })
         end
       end,

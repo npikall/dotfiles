@@ -416,7 +416,13 @@ do
     gopls = {},
     golangci_lint_ls = {},
     ty = {},
-    tinymist = {},
+    tinymist = {
+      settings = {
+        formatterMode = 'typstyle',
+        formatterProseWrap = true,
+        formatterPrintWidth = 88,
+      },
+    },
     -- pyright = {},
     -- rust_analyzer = {},
     -- ts_ls = {},
@@ -506,6 +512,7 @@ do
         go = true,
         json = true,
         markdown = true,
+        typst = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
         return { timeout_ms = 500 }
@@ -523,7 +530,7 @@ do
       python = { 'ruff' },
       json = { 'prettier' },
       markdown = { 'markdownlint' },
-      typst = { 'typstyle' },
+
       bibtex = { 'bibtex-tidy' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
