@@ -139,6 +139,11 @@ do
         vim.cmd 'TSUpdate'
         return
       end
+
+      if name == 'avante.nvim' and vim.fn.executable 'make' == 1 then
+        run_build(name, { 'make' }, ev.data.path)
+        return
+      end
     end,
   })
 end
@@ -671,6 +676,7 @@ do
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   require 'custom.plugins.preview'
+  require 'custom.plugins.avante'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
