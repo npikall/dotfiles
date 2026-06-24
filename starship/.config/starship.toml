@@ -24,7 +24,7 @@ style = "directory"
 
 [git_branch]
 symbol = "git"
-format = '[$symbol:\([ $branch](branch)\)](symbol)'
+format = '[$symbol:\([ $branch](branch)\)](symbol) '
 
 [git_status]
 style = "status"
