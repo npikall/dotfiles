@@ -70,10 +70,16 @@ yazi:
 [group("package")]
 zellij:
     stow zellij -t "{{ home }}" --adopt
+
 # stow only git config
 [group("package")]
 git *args:
     stow git -t "{{ home }}" --adopt {{ args }}
+
+# stow only jj config
+[group("package")]
+jj *args:
+    stow jj -t "{{ home }}" --adopt {{ args }}
 
 # stow only pi
 [group("package")]
