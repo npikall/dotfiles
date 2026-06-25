@@ -37,6 +37,16 @@ alias lr='git l -10'
 alias cdr='cd $(git rev-parse --show-toplevel)' # cd to git Root
 alias hs='git rev-parse --short HEAD'
 
+# jj
+alias jn='jj new'
+alias jc='jj commit'
+alias js='jj status'
+alias jf='jj git fetch'
+alias jfnm='jj git fetch && jj new main'
+alias jp='jj git push'
+alias jd='jj diff'
+alias jrt='jj retrunk'
+
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
