@@ -11,6 +11,7 @@
 	pu = pull
 	up = push
 	b = branch
+	nuke = "!git reset --hard HEAD && git clean -fd"
 
 	l = "!. ~/.githelpers && pretty_git_log"
 	la = "!git l --all"
