@@ -1,5 +1,6 @@
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 
+alias git=/opt/homebrew/bin/git
 alias aliases="grep -E '^alias ' ~/.zshrc | sed 's/alias //'"
 alias ..='echo "cd .."; cd ..'
 alias c="clear"
@@ -10,7 +11,7 @@ alias de='echo "deactivate"; deactivate'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias pomo='$HOME/scripts/pomo-mac.sh'
 alias gi='lazygit'
-alias ll='ls -alF'
+alias ll='ls -alFG'
 
 
 # git
