@@ -29,12 +29,14 @@
 	defaultbranch = master
 [core]
 	editor = nvim
+	pager = delta
 [gpg]
 	format = ssh
 [commit]
 	gpgsign = true
 [merge]
 	tool = nvimdiff3
+	conflictstyle = diff3
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
@@ -42,3 +44,8 @@
 	smudge = git-lfs smudge -- %f
 [pull]
 	rebase = true
+[delta]
+    navigate = true
+    side-by-side = false
+[diff]
+    colorMoved = default
