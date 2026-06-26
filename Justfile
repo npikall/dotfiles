@@ -1,5 +1,9 @@
 [default]
 _default:
+    @echo "Home packages: {{ BLUE }}{{ BOLD }}{{ home_pkgs }}{{ NORMAL }}"
+    @echo "Config packages: {{ BLUE }}{{ BOLD }}{{ config_pkgs }}{{ NORMAL }}"
+    @echo "Bundles: {{ BLUE }}{{ BOLD }}base extras all{{ NORMAL }}"
+    @echo ""
     @just --list
 
 alias xl := ext-list
@@ -8,122 +12,100 @@ alias xi := ext-install
 home := home_directory()
 config_dir := config_directory()
 xdg_config_dir := if env('XDG_CONFIG_HOME', '') =~ '^/' { env('XDG_CONFIG_HOME') } else { home_directory() / '.config' }
+shell_pkg := if os() == "macos" { "zsh" } else { "bash" }
 
-# stow only bash configs
-[group("shell")]
-bash:
-    stow bash -t "{{ home }}" --adopt
+home_pkgs := "bash zsh cobra rustfmt scripts nvim starship yazi zellij git jj pi zed worktrunk"
+config_pkgs := "lazygit vscode crush"
 
-# stow only zsh configs
-[group("shell")]
-zsh:
-    stow zsh -t "{{ home }}" --adopt
+base_bundle := "lazygit nvim starship yazi zellij git"
+extras_bundle := "cobra rustfmt scripts"
+all_bundle := shell_pkg + " " + base_bundle + " " + extras_bundle
 
-# stow only lazygit [linux]
-[group("package")]
-[linux]
-lazygit:
-    stow lazygit -t "{{ xdg_config_dir }}/lazygit" --adopt
+# List all available packages
+[group("info")]
+list:
+    #!/usr/bin/env bash
+    echo "{{ BOLD }}Home packages:{{ NORMAL }}"
+    for pkg in {{ home_pkgs }}; do echo "  {{ BLUE }}{{ BOLD }}$pkg{{ NORMAL}}"; done
+    echo ""
+    echo "{{ BOLD }}Config packages:{{ NORMAL }}"
+    for pkg in {{ config_pkgs }}; do echo "  {{ BLUE }}{{ BOLD }}$pkg{{ NORMAL}}"; done
 
-# stow only layzgit [macos]
-[group("package")]
-[macos]
-lazygit:
-    stow lazygit -t "{{ config_dir }}/lazygit" --adopt
+# List all bundles and their contents
+[group("info")]
+list-bundles:
+    #!/usr/bin/env bash
+    echo "{{ BOLD }}base:{{ NORMAL }}   {{ base_bundle }}"
+    echo "{{ BOLD }}extras:{{ NORMAL }} {{ extras_bundle }}"
+    echo "{{ BOLD }}all:{{ NORMAL }}    {{ all_bundle }}"
 
-# stow only cobra
-[group("extra")]
-cobra:
-    stow cobra -t "{{ home }}" --adopt
+# Stow single package to correct location
+[group("stow")]
+stow pkg:
+    #!/usr/bin/env bash
+    if echo "{{ home_pkgs }}" | grep -qw "{{ pkg }}"; then
+        stow {{ pkg }} --adopt
+        echo "{{ GREEN }}{{ BOLD }}Installed{{ NORMAL }}: {{ pkg }}"
+    elif echo "{{ config_pkgs }}" | grep -qw "{{ pkg }}"; then
+        stow {{ pkg }} -t "{{ config_dir }}" --adopt
+        echo "{{ GREEN }}{{ BOLD }}Installed{{ NORMAL }}: {{ pkg }}"
+    else
+        echo "{{ RED }}{{ BOLD }}Unknown package{{ NORMAL }}: {{ pkg }}"
+        echo "Home packages: {{ BLUE }}{{ BOLD }}{{ home_pkgs }}{{ NORMAL }}"
+        echo "Config packages: {{ BLUE }}{{ BOLD }}{{ config_pkgs }}{{ NORMAL }}"
+        exit 1
+    fi
 
-# stow only rustfmt
-[group("extra")]
-rustfmt:
-    stow rustfmt -t "{{ home }}" --adopt
+# Unstow single package from correct location
+[group("stow")]
+unstow pkg:
+    #!/usr/bin/env bash
+    if echo "{{ home_pkgs }}" | grep -qw "{{ pkg }}"; then
+        stow -D {{ pkg }}
+        echo "{{ GREEN }}{{ BOLD }}Uninstalled{{ NORMAL }}: {{ pkg }}"
+    elif echo "{{ config_pkgs }}" | grep -qw "{{ pkg }}"; then
+        stow -D {{ pkg }} -t "{{ config_dir }}"
+        echo "{{ GREEN }}{{ BOLD }}Uninstalled{{ NORMAL }}: {{ pkg }}"
+    else
+        echo "Unknown package: {{ pkg }}"
+        echo "Home:   {{ home_pkgs }}"
+        echo "Config: {{ config_pkgs }}"
+        exit 1
+    fi
 
-# stow only scripts
-[group("extra")]
-scripts:
-    stow scripts -t "{{ home }}" --adopt
+# Stow bundle of packages (base|extras|all)
+[group("bundles")]
+stow-bundle name:
+    #!/usr/bin/env bash
+    case "{{ name }}" in
+        base)   pkgs="{{ base_bundle }}" ;;
+        extras) pkgs="{{ extras_bundle }}" ;;
+        all)    pkgs="{{ all_bundle }}" ;;
+        *)      echo "Unknown bundle: {{ name }} (base|extras|all)"; exit 1 ;;
+    esac
+    for pkg in $pkgs; do
+        just stow "$pkg"
+    done
 
-# stow only vscode
-[group("package")]
-vscode:
-    stow vscode -t "{{ config_dir }}" --adopt
+# Unstow bundle of packages (base|extras|all)
+[group("bundles")]
+unstow-bundle name:
+    #!/usr/bin/env bash
+    case "{{ name }}" in
+        base)   pkgs="{{ base_bundle }}" ;;
+        extras) pkgs="{{ extras_bundle }}" ;;
+        all)    pkgs="{{ all_bundle }}" ;;
+        *)      echo "Unknown bundle: {{ name }} (base|extras|all)"; exit 1 ;;
+    esac
+    for pkg in $pkgs; do
+        just unstow "$pkg"
+    done
 
-# stow only nvim
-[group("package")]
-nvim:
-    stow nvim -t "{{ home }}" --adopt
-
-# stow only starship
-[group("package")]
-starship:
-    stow starship -t "{{ home }}" --adopt
-
-# stow only yazi
-[group("package")]
-yazi:
-    stow yazi -t "{{ home }}" --adopt
-
-# stow only zellij
-[group("package")]
-zellij:
-    stow zellij -t "{{ home }}" --adopt
-
-# stow only git config
-[group("package")]
-git *args:
-    stow git -t "{{ home }}" --adopt {{ args }}
-
-# stow only jj config
-[group("package")]
-jj *args:
-    stow jj -t "{{ home }}" --adopt {{ args }}
-
-# stow only pi
-[group("package")]
-pi *args:
-    stow pi -t "{{ home }}" --adopt {{ args }}
-
-# stow only zed
-[group("package")]
-zed:
-    stow zed -t "{{ home }}" --adopt
-
-# stow only ghossty
-[group("extra")]
+# Stow ghostty config [macos]
+[group("stow")]
 [macos]
 ghostty:
     stow ghostty -t "{{ home }}/Library/Application Support/com.mitchellh.ghostty" --adopt
-
-# stow only crush
-[group("extra")]
-crush:
-    stow crush -t "{{ config_dir }}/crush" --adopt
-
-# stow only worktrunk
-[group("extra")]
-worktrunk:
-    stow worktrunk -t "{{ home }}" --adopt
-
-# Install only the extra configurations
-[group("bundles")]
-extras: cobra rustfmt scripts
-
-# Install only the package configurations
-[group("bundles")]
-base: lazygit nvim starship yazi zellij git
-
-# Install all configurations (base + extra + shell) [macos]
-[group("bundles")]
-[macos]
-stow: zsh base extras
-
-# Install all configurations (base + extra + shell) [linux]
-[group("bundles")]
-[linux]
-stow: bash base extras
 
 # Uninstall all extensions saved in vscode-extensions.txt
 [group("vscode-extensions")]
