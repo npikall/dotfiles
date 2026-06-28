@@ -156,9 +156,7 @@ alias s='git status'
 alias sw='git switch'
 alias ga='git add'
 alias gaa='git add -A'
-gc() {
-  git commit -m "$*"
-}
+alias gc='git commit'
 alias gcm='git checkout main'
 alias gd='git diff'
 alias gdc='git diff --cached'
