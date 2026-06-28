@@ -51,3 +51,5 @@
     colorMoved = default
 [status]
 	short = true
+[push]
+	autoSetupRemote = true
