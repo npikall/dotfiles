@@ -6,11 +6,14 @@ alias ..='echo "cd .."; cd ..'
 alias c="clear"
 alias vim="nvim"
 alias vi='nvim'
+alias vin='nvim ~/.config/nvim/init.lua'
+alias viz='nvim ~/.zshrc'
 alias ve='echo "source .venv/bin/activate"; source .venv/bin/activate'
 alias de='echo "deactivate"; deactivate'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias pomo='$HOME/scripts/pomo-mac.sh'
 alias gi='lazygit'
+alias got='go test ./...'
 alias ll='ls -alFG'
 
 
