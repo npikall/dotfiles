@@ -240,3 +240,4 @@ unset __conda_setup
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
