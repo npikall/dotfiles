@@ -4,5 +4,74 @@
 name = "npikall"
 email = "nikolas.pikall@gmail.com"
 
+[aliases]
+# tug: bring nearest bookmark up to recent commit
+tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
+
+# retrunk:
+# `jj rebase -d 'trunk()'` is shorthand for `jj rebase -b @ -d 'trunk()'`
+#
+# What that does:
+#
+# `-b @` rebases the entire branch that the current @ is on relative to the destination. (Default),
+# `-d trunk()` sets the destination. trunk() finds the most recent `main | master | trunk` branch thats on a remote. trunk() is builtin.
+retrunk = ["rebase", "-d", "trunk()"]
+
+
+# collapse:
+# combine all of the revs from the current one to the start of the "branch" into one
+collapse = ["squash", "-f", "branch_start(@)+::@", "-t", "branch_start(@)"]
+
+# co-br: checkout a remote branch to work on it
+# Usage: jj co-br <bookmark-name>
+co-br = ["util", "exec", "--", "sh", "-c", """
+jj git fetch && \
+jj bookmark track "$1@origin" 2>/dev/null; \
+jj new "$1"
+""", ""]
+
+# checkout: track a remote bookmark and create a new change on it
+# Usage: jj checkout <branch> [remote]
+checkout = ["util", "exec", "--", "sh", "-c", """
+set -e
+branch="$1"
+remote="${2:-origin}"
+jj git fetch --remote "$remote"
+jj bookmark track "$branch" --remote "$remote"
+jj new "$branch"
+""", ""]
+
+lr = ["log", "-r", "all()", "-n", "10"]
+
+# up: move nearest bookmark to @- then push it
+# Usage: jj commit -m "..." && jj up
+up = ["util", "exec", "--", "sh", "-c", """
+set -e
+bookmark=$(jj log -r 'closest_bookmark(@-)' --no-graph -T 'local_bookmarks' 2>/dev/null | sed 's/[* ].*//' | grep -v '^$' | head -1)
+if [ -z "$bookmark" ]; then
+  echo "up: no bookmark found near @-" >&2
+  exit 1
+fi
+jj bookmark move --from "closest_bookmark(@-)" --to @-
+jj git push --bookmark "$bookmark"
+""", ""]
+
+[revset-aliases]
+"closest_bookmark(to)" = "heads(::to & bookmarks())"
+
+# From indigo
+"branch_start(to)" = "heads(::to & trunk())+ & ::to"
+
+# From mitchellh
+[template-aliases]
+"format_timestamp(timestamp)" = "timestamp.ago()"
+
 [ui]
 default-command = "log"
+diff-editor = ":builtin"
+merge-editor = ":builtin"
+
+[signing]
+behavior = "own"
+backend = "ssh"
+key = "~/.ssh/id_ed25519.pub"
