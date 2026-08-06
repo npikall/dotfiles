@@ -14,7 +14,7 @@ config_dir := config_directory()
 xdg_config_dir := if env('XDG_CONFIG_HOME', '') =~ '^/' { env('XDG_CONFIG_HOME') } else { home_directory() / '.config' }
 shell_pkg := if os() == "macos" { "zsh" } else { "bash" }
 
-home_pkgs := "bash zsh cobra rustfmt scripts nvim starship yazi zellij git jj pi zed worktrunk"
+home_pkgs := "bash zsh cobra rustfmt scripts nvim starship yazi zellij git jj pi zed worktrunk nix"
 config_pkgs := "lazygit vscode crush"
 
 base_bundle := "lazygit nvim starship yazi zellij git"
