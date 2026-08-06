@@ -6,6 +6,7 @@ command_timeout = 1000
 format = """
 $character\
 $directory\
+$nix_shell\
 ${custom.git_branch}\
 ${custom.git_status}\
 ${custom.jj_branch}\
@@ -24,6 +25,12 @@ error_symbol = "[➜](bold error)"
 truncation_length = 1
 read_only = " 🔒"
 style = "directory"
+
+[nix_shell]
+format = '[nix:\($state\)]($style) '
+style = "nix_symbol"
+pure_msg = "pure"
+impure_msg = "impure"
 
 [git_branch]
 disabled = true
@@ -121,6 +128,7 @@ python = "#565f89"
 node = "#73daca"
 rust = "#ff9e64"
 go = "#7aa2f7"
+nix_symbol = "#bb9af7"
 
 [palettes.gruvbox]
 error = "#fb4934"
@@ -134,6 +142,7 @@ python = "#fabd2f"
 node = "#83a598"
 rust = "#fe8019"
 go = "#83a598"
+nix_symbol = "#d3869b"
 
 [palettes.kanagawa]
 error = "#E46876"
@@ -147,6 +156,7 @@ python = "#DCA561"
 node = "#98BB6C"
 rust = "#DCA561"
 go = "#7FB4CA"
+nix_symbol = "#957FB8"
 
 [palettes.catppuccin_mocha]
 error = "#F38BA8"
@@ -160,6 +170,7 @@ python = "#F9E2AF"
 node = "#A6E3A1"
 rust = "F9E2AF"
 go = "#89B4FA"
+nix_symbol = "#CBA6F7"
 
 [palettes.darkplus]
 error = "#ff1212"
@@ -171,6 +182,7 @@ jj_symbol = "#CE9178"
 status = "#C586C0"
 python = "#DCDCAA"
 go = "#9CDCFE"
+nix_symbol = "#D7BA7D"
 node = "#4EC9B0"
 rust = "#4EC9B0"
 
@@ -184,6 +196,7 @@ jj_symbol = "#FFB454"
 status = "#DFBFFF"
 python = "#DCDCAA"
 go = "#9CDCFE"
+nix_symbol = "#95E6CB"
 node = "#4EC9B0"
 rust = "#4EC9B0"
 
@@ -199,6 +212,7 @@ python = "#DBBC7F"
 node = "#7EB98C"
 rust = "#D699B6"
 go = "#7FBBB3"
+nix_symbol = "#83C092"
 
 [palettes.github_dark]
 error = "#F25D5D"
@@ -212,6 +226,7 @@ python = "#FFD700"
 node = "#80B6F4"
 rust = "#D77B7B"
 go = "#3E8EDE"
+nix_symbol = "#DCBDFB"
 
 [palettes.kanso]
 error = "#c4746e"
@@ -225,3 +240,4 @@ python = "#C4B28A"
 node = "#8ea4a2"
 rust = "#A292A3"
 go = "#7AA89F"
+nix_symbol = "#957FB8"
