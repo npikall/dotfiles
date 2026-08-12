@@ -5,6 +5,7 @@
 [alias]
 	# Taken from Thorsten Ball: https://github.com/mrnugget/dotfiles/blob/29c5eab8a629985464dd05c0b8289da5a4c28674/gitconfig
 	co = checkout
+	sw = switch
 	wt = worktree
 	st = status
 	rh = reset HEAD
