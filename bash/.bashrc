@@ -128,18 +128,13 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias aliases="grep -E '^alias ' ~/.bashrc | sed 's/alias //'"
 alias ..='echo "cd .."; cd ..'
 alias bat='batcat'
 alias c='clear'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
-alias gbc='$HOME/scripts/bare-clone.sh'
 alias gi='lazygit'
-alias l='ls -CF'
 alias la='ls -A'
 alias ll='ls -alF'
-alias pomo='$HOME/scripts/pomo.sh'
-alias templ='$HOME/scripts/copier.sh'
 alias ve='echo "source .venv/bin/activate"; source .venv/bin/activate'
 alias de='echo "deactivate"; deactivate'
 alias vi='nvim'
@@ -154,7 +149,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 
 # git
-alias gst='git status'
 alias s='git status'
 alias sw='git switch'
 alias ga='git add'
@@ -163,7 +157,6 @@ alias gc='git commit'
 alias gcm='git checkout main'
 alias gd='git diff'
 alias gdc='git diff --cached'
-# [c]heck [o]ut
 alias co='git checkout'
 alias up='git push'
 alias upf='git push --force'
