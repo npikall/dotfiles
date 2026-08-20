@@ -36,9 +36,10 @@
 	format = ssh
 [commit]
 	gpgsign = true
+	verbose = true
 [merge]
 	tool = nvimdiff3
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
@@ -47,11 +48,26 @@
 [pull]
 	rebase = true
 [delta]
-    navigate = true
-    side-by-side = false
+	navigate = true
+	side-by-side = false
 [diff]
-    colorMoved = default
+	algorithm = histogram
 [status]
 	short = true
 [push]
 	autoSetupRemote = true
+	followTags = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[help]
+	autocorrect = prompt
+[branch]
+	sort = -committerdate
+[tag]
+	sort = -version:refname
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
