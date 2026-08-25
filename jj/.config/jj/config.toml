@@ -65,6 +65,7 @@ jj git push --bookmark "$bookmark"
 # From mitchellh
 [template-aliases]
 "format_timestamp(timestamp)" = "timestamp.ago()"
+"format_short_signature(signature)" = "signature.name()"
 
 [ui]
 default-command = "log"
