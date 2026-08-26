@@ -98,3 +98,4 @@ zle-line-init() { echo -ne '\e[2 q'; }
 zle -N zle-line-init
 fpath=(~/.zsh/completions $fpath)
 autoload -U compinit && compinit
+source <(COMPLETE=zsh jj)
