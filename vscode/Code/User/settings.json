@@ -72,5 +72,17 @@
         "reportDeprecated": "warning",
         "reportMatchNotExhaustive": "error",
     },
-    "workbench.activityBar.location": "top"
+    "workbench.activityBar.location": "top",
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "python.languageServer": "Default",
+    "yaml.disableSchemaDetection": [
+        "**/.github/workflows/*.yml",
+        "**/.github/workflows/*.yaml",
+        "**/.gitea/workflows/*.yml",
+        "**/.gitea/workflows/*.yaml",
+        "**/.forgejo/workflows/*.yml",
+        "**/.forgejo/workflows/*.yaml"
+    ]
 }

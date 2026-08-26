@@ -110,10 +110,9 @@ ghostty:
 # Uninstall all extensions saved in vscode-extensions.txt
 [group("vscode-extensions")]
 ext-uninstall:
-    while read -r line; do \
-    echo "uninstall $line"; \
-    code --uninstall-extension "$line"; \
-    done < vscode-extensions.txt
+    code --list-extensions | while read extension; do \
+    code --uninstall-extension $extension --force; \
+    done
 
 # Install all extensions saved in vscode-extensions.txt
 [group("vscode-extensions")]
@@ -126,4 +125,4 @@ ext-install:
 # List all vscode extensions and write them in the extensions file
 [group("vscode-extensions")]
 ext-list file="vscode-extensions.txt":
-    code --list-extensions > {{ file }}
+    code --list-extensions --show-versions > {{ file }}
