@@ -67,8 +67,8 @@
     "dark": "Material Icon Theme",
   },
   "vim_mode": true,
-  "ui_font_size": 16,
-  "buffer_font_size": 17.0,
+  "ui_font_size": 28,
+  "buffer_font_size": 28.0,
   "theme": {
     "mode": "dark",
     "light": "One Light",
