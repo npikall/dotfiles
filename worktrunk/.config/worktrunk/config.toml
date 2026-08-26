@@ -1,2 +1,0 @@
-# ~/.config/worktrunk/config.toml
-worktree-path = "../{{ branch | sanitize }}"
