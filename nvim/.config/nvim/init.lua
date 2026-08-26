@@ -429,6 +429,7 @@ do
     -- ts_ls = {},
     stylua = {}, -- Used to format Lua code
     markdownlint = {},
+    zizmor = {},
     -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
       on_init = function(client)
