@@ -8,6 +8,7 @@ case $- in
 *) return ;;
 esac
 
+export LOCAL_NOTEBOOK_DEV=1
 export PAGER="less"
 export GROFF_NO_SGR=1
 # Support colors in less
@@ -245,3 +246,4 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+source <(COMPLETE=bash jj)

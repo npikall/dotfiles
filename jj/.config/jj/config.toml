@@ -5,9 +5,6 @@ name = "npikall"
 email = "nikolas.pikall@gmail.com"
 
 [aliases]
-# tug: bring nearest bookmark up to recent commit
-tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
-
 # retrunk:
 # `jj rebase -d 'trunk()'` is shorthand for `jj rebase -b @ -d 'trunk()'`
 #
