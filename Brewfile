@@ -7,6 +7,16 @@ tap "tinygo-org/tools"
 brew "aspell"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
+# Statistics utility to count lines of code
+brew "cloc"
+# Cross-platform make
+brew "cmake"
+# Modern, maintained replacement for ls
+brew "eza"
+# PDF reader for terminal emulators using the Kitty image protocol
+brew "fancy-cat"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Play, record, convert, and stream select audio and video codecs
@@ -84,6 +94,7 @@ cask "font-symbols-only-nerd-font"
 cask "ghostty"
 # Multiplayer code editor
 cask "zed"
+go "github.com/npikall/anchor"
 # Release engineering, simplified
 cask "goreleaser/tap/goreleaser"
 # A minimal package manager for Typst
