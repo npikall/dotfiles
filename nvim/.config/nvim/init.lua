@@ -82,15 +82,6 @@ do
 
   -- NOTE: Custom Keymaps
   vim.keymap.set('n', '<leader>lr', '<cmd>lsp restart<CR>', { desc = 'Restart the LSP' })
-  vim.keymap.set('n', '<leader>er', function()
-    local line = vim.api.nvim_get_current_line()
-    local indent = line:match '^(%s*)' -- preserve current indentation
-    local snippet = indent .. 'if err != nil {\n' .. indent .. '\treturn err\n' .. indent .. '}'
-
-    local row = vim.api.nvim_win_get_cursor(0)[1]
-    vim.api.nvim_buf_set_lines(0, row, row, false, vim.split(snippet, '\n'))
-    vim.api.nvim_win_set_cursor(0, { row + 2, #indent + 1 }) -- place cursor on "return err"
-  end, { desc = 'Insert Go error handling block' })
 
   -- NOTE: [[ Basic Autocommands ]]
   vim.api.nvim_create_autocmd('TextYankPost', {
@@ -550,6 +541,7 @@ do
     formatters_by_ft = {
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
+      go = { 'gofumpt' },
       python = { 'ruff' },
       json = { 'prettier' },
       -- prettier hard-wraps prose (see the prepend_args below); markdownlint
@@ -594,6 +586,12 @@ do
   --
   vim.pack.add { gh 'rafamadriz/friendly-snippets' }
   require('luasnip.loaders.from_vscode').lazy_load()
+  -- Custom snippets from `luasnippets/<filetype>.lua`
+  require('luasnip.loaders.from_lua').lazy_load()
+  vim.keymap.set({ 'i', 's' }, '<C-j>', function()
+    local ls = require 'luasnip'
+    if ls.choice_active() then ls.change_choice(1) end
+  end, { desc = 'Cycle snippet choice' })
 
   -- [[ Autocomplete Engine ]]
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
