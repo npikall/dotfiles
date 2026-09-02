@@ -14,7 +14,13 @@ alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias pomo='$HOME/scripts/pomo-mac.sh'
 alias gi='lazygit'
 alias got='go test ./...'
-alias ll='COLUMNS=1 ls -GF'
+alias ls='eza -lh --git --group-directories-first --icons=auto'
+alias ll='ls -a'
+ignore() {
+  local root
+  root=$(git rev-parse --show-toplevel) || return
+  printf '%s\n' "$@" >> "$root/.gitignore"
+}
 
 
 # git
@@ -54,6 +60,10 @@ jp() {
   jj git push "$@"
 }
 alias jd='jj diff'
+
+# Misspelled once, never again
+alias taks="task"
+alias jsut="just"
 
 # [f]ind and [r]eplace: fr oldword newword
 fr() {
