@@ -1,6 +1,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 palette = "kanso"
-command_timeout = 1000
+command_timeout = 1500
 add_newline = false
 
 format = """
@@ -53,7 +53,7 @@ disabled = true
 disabled = true
 
 [python]
-format = "[ $virtualenv ]($style) "
+format = "[ $virtualenv ]($style)"
 style = "python"
 
 [rust]
