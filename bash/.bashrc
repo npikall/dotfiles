@@ -142,6 +142,7 @@ alias vi='nvim'
 alias vim='nvim'
 alias vin='nvim ~/.config/nvim/init.lua'
 alias viz='nvim ~/.bashrc'
+alias vid='nvim ~/.dotfiles'
 alias got='go test ./...'
 
 # Add an "alert" alias for long running commands.  Use like so:

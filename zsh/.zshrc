@@ -8,6 +8,7 @@ alias vim="nvim"
 alias vi='nvim'
 alias vin='nvim ~/.config/nvim/init.lua'
 alias viz='nvim ~/.zshrc'
+alias vid='nvim ~/.dotfiles'
 alias ve='echo "source .venv/bin/activate"; source .venv/bin/activate'
 alias de='echo "deactivate"; deactivate'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
