@@ -1,21 +1,17 @@
 "$schema" = 'https://starship.rs/config-schema.json'
-#credits: https://github.com/leonlonsdale/robbyrusselish/blob/main/starship.toml
 palette = "kanso"
 command_timeout = 1000
+add_newline = false
 
 format = """
 $character\
 $directory\
 $nix_shell\
-${custom.git_branch}\
-${custom.git_status}\
-${custom.jj_branch}\
-${custom.jj_status}\
+${custom.jj}\
+${custom.git}\
 $python\
-$nodejs\
 $rust\
 $golang"""
-add_newline = false
 
 [character]
 success_symbol = "[➜](bold success)"
@@ -23,8 +19,10 @@ error_symbol = "[➜](bold error)"
 
 [directory]
 truncation_length = 1
+truncate_to_repo = false
 read_only = " 🔒"
 style = "directory"
+format = "[$path]($style)[$read_only]($read_only_style) "
 
 [nix_shell]
 format = '[nix:\($state\)]($style) '
@@ -32,88 +30,40 @@ style = "nix_symbol"
 pure_msg = "pure"
 impure_msg = "impure"
 
+# jj-starship emits its own colours; $output is passed through verbatim.
+[custom.jj]
+description = "Jujutsu change id, bookmark and status"
+when = "jj root"
+command = "jj-starship prompt --no-jj-prefix"
+symbol = "󱗆 "
+format = "[$symbol](jj_symbol)$output "
+
+[custom.git]
+description = "Git branch and status (only when not a jj repo)"
+when = "! jj root > /dev/null 2>&1 && git rev-parse --is-inside-work-tree"
+command = "jj-starship prompt --no-git-prefix --no-git-id"
+symbol = " "
+format = "[$symbol](branch)$output "
+
+# Built-in git modules are replaced by the custom.git module above.
 [git_branch]
 disabled = true
 
 [git_status]
 disabled = true
 
-[custom.git_branch]
-command = 'git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null'
-when = 'git rev-parse --git-dir >/dev/null 2>&1 && ! jj root --quiet >/dev/null 2>&1'
-format = '[git:\(](symbol)[$output](branch)[\)](symbol) '
-
-[custom.git_status]
-command = '''
-s=""
-p=$(git status --porcelain 2>/dev/null)
-ahead=$(git rev-list "@{u}.." 2>/dev/null | wc -l | tr -d ' ')
-behind=$(git rev-list "..@{u}" 2>/dev/null | wc -l | tr -d ' ')
-conflicted=$(echo "$p" | grep -c "^UU\|^AA\|^DD" 2>/dev/null || true)
-untracked=$(echo "$p" | grep -c "^??" 2>/dev/null || true)
-modified=$(echo "$p" | grep -c "^ [MD]" 2>/dev/null || true)
-staged=$(echo "$p" | grep -c "^[MARCD] " 2>/dev/null || true)
-renamed=$(echo "$p" | grep -c "^.R\|^R " 2>/dev/null || true)
-deleted=$(echo "$p" | grep -c "^.D\|^D " 2>/dev/null || true)
-[ "$conflicted" -gt 0 ] 2>/dev/null && s="${s}󰞇${conflicted}"
-[ "$ahead" -gt 0 ] 2>/dev/null && s="${s}⇡${ahead}"
-[ "$behind" -gt 0 ] 2>/dev/null && s="${s}⇣${behind}"
-[ "$untracked" -gt 0 ] 2>/dev/null && s="${s}…${untracked}"
-[ "$modified" -gt 0 ] 2>/dev/null && s="${s}$(printf '\xef\x90\x92')${modified}"
-[ "$staged" -gt 0 ] 2>/dev/null && s="${s}+${staged}"
-[ "$renamed" -gt 0 ] 2>/dev/null && s="${s}»${renamed}"
-[ "$deleted" -gt 0 ] 2>/dev/null && s="${s}✘${deleted}"
-printf '%s' "$s"
-'''
-when = 'git rev-parse --git-dir >/dev/null 2>&1 && ! jj root --quiet >/dev/null 2>&1'
-format = '[\[$output\]](status) '
-
-[custom.jj_branch]
-command = '''
-bookmark=$(jj log -r @ --no-graph -T 'bookmarks' 2>/dev/null | tr -d '*' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-change_id=$(jj log -r @ --no-graph -T 'change_id.shortest()' 2>/dev/null) || exit 1
-ref="${bookmark:-$change_id}"
-printf '%s' "$ref"
-'''
-when = 'jj root --quiet >/dev/null 2>&1'
-format = '[jj:\(](jj_symbol)[$output](branch)[\)](jj_symbol) '
-
-[custom.jj_status]
-command = '''
-s=""
-unpushed_revset='((trunk() & ~root() & ::@-)::@-) ~ (trunk() & ~root() & ::@-)'
-unpushed_count=$(jj log -r "$unpushed_revset" --no-graph --ignore-working-copy -T 'commit_id ++ "\n"' 2>/dev/null | wc -l | tr -d ' ')
-if jj status 2>/dev/null | grep -q "Working copy changes:"; then
-  wc_status=""
-elif jj log -r @ --no-graph -T 'conflict' 2>/dev/null | grep -q "true"; then
-  wc_status="󰞇"
-else
-  wc_status=""
-fi
-[ "$unpushed_count" -gt 0 ] 2>/dev/null && s="⇡${unpushed_count}"
-s="${s}${wc_status}"
-[ -n "$s" ] && printf '%s' "$s"
-'''
-when = 'jj root --quiet >/dev/null 2>&1'
-format = '[$output](status) '
-
 [python]
 format = "[ $virtualenv ]($style) "
 style = "python"
 
-[nodejs]
-symbol = " "
-format = "[$symbol]($style) "
-style = "node"
-
 [rust]
 symbol = " "
-format = "[$symbol]($style) "
+format = "[$symbol]($style)"
 style = "rust"
 
 [golang]
 symbol = " "
-format = "[$symbol]($style) "
+format = "[$symbol]($style)"
 style = "go"
 
 [palettes.tokyonight]
