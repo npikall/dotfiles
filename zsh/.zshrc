@@ -1,7 +1,6 @@
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 
 alias git=/opt/homebrew/bin/git
-alias aliases="grep -E '^alias ' ~/.zshrc | sed 's/alias //'"
 alias ..='echo "cd .."; cd ..'
 alias c="clear"
 alias vim="nvim"
@@ -15,7 +14,7 @@ alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias pomo='$HOME/scripts/pomo-mac.sh'
 alias gi='lazygit'
 alias got='go test ./...'
-alias ll='ls -alFG'
+alias ll='COLUMNS=1 ls -GF'
 
 
 # git
@@ -45,9 +44,27 @@ alias jn='jj new'
 alias jc='jj commit'
 alias js='jj status'
 alias jf='jj git fetch'
-alias jfnm='jj git fetch && jj new main'
-alias jp='prek run -a && jj git push'
+alias jfnm="jj git fetch && jj new 'trunk()'"
+jp() {
+  local root
+  root=$(jj root) || return
+  if [[ -f "$root/.pre-commit-config.yaml" || -f "$root/.pre-commit-config.yml" ]]; then
+    prek run --all-files || return
+  fi
+  jj git push "$@"
+}
 alias jd='jj diff'
+
+# [f]ind and [r]eplace: fr oldword newword
+fr() {
+  if [[ $# -ne 2 ]]; then
+    echo "usage: fr <old> <new>"
+    return 1
+  fi
+  local -a sed_i=(-i)
+  [[ $OSTYPE == darwin* ]] && sed_i=(-i '')
+  rg -l0 -- "$1" | xargs -0 -r sed "${sed_i[@]}" "s/$1/$2/g"
+}
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -99,3 +116,4 @@ zle -N zle-line-init
 fpath=(~/.zsh/completions $fpath)
 autoload -U compinit && compinit -i
 source <(COMPLETE=zsh jj)
+bindkey -e
