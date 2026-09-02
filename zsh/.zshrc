@@ -97,5 +97,5 @@ precmd_functions+=(_fix_cursor)
 zle-line-init() { echo -ne '\e[2 q'; }
 zle -N zle-line-init
 fpath=(~/.zsh/completions $fpath)
-autoload -U compinit && compinit
+autoload -U compinit && compinit -i
 source <(COMPLETE=zsh jj)
