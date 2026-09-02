@@ -489,6 +489,7 @@ do
   local ensure_installed = vim.tbl_keys(servers or {})
   vim.list_extend(ensure_installed, {
     -- You can add other tools here that you want Mason to install
+    'prettier', -- Used to format markdown and json
   })
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
   for name, server in pairs(servers) do
@@ -531,12 +532,24 @@ do
       -- Conform can also run multiple formatters sequentially
       python = { 'ruff' },
       json = { 'prettier' },
-      markdown = { 'markdownlint' },
+      -- prettier hard-wraps prose (see the prepend_args below); markdownlint
+      -- --fix cannot do that, which is why it is not used for formatting.
+      markdown = { 'prettier' },
 
       bibtex = { 'bibtex-tidy' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
+    },
+    formatters = {
+      prettier = {
+        -- Wrap markdown prose at 80 columns so markdownlint's MD013 stays quiet.
+        -- Other filetypes keep prettier's defaults.
+        prepend_args = function(_, ctx)
+          if vim.bo[ctx.buf].filetype == 'markdown' then return { '--prose-wrap', 'always', '--print-width', '80' } end
+          return {}
+        end,
+      },
     },
   }
 

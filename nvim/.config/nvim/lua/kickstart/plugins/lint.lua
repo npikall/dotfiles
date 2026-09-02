@@ -7,6 +7,11 @@ lint.linters_by_ft = {
   markdown = { 'markdownlint' }, -- Make sure to install `markdownlint` via mason / npm
 }
 
+-- MD013/line-length is off: conform hard-wraps markdown prose at 80 on save
+-- via prettier, and prettier cannot break tables, code blocks or long URLs.
+-- The trailing `--` terminates the variadic `--disable` list.
+lint.linters.markdownlint.args = { '--stdin', '--disable', 'MD013', '--' }
+
 -- To allow other plugins to add linters to require('lint').linters_by_ft,
 -- instead set linters_by_ft like this:
 -- lint.linters_by_ft = lint.linters_by_ft or {}
