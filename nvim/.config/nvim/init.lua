@@ -100,6 +100,12 @@ do
   })
 end
 
+vim.filetype.add {
+  filename = {
+    ['gotpm.lock'] = 'json',
+  },
+}
+
 -- ============================================================
 -- SECTION 2: PLUGIN MANAGER INTRO
 -- vim.pack intro, build hooks
