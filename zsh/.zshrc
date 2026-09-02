@@ -42,7 +42,7 @@ alias pur='git pull --rebase'
 alias fe='git fetch'
 alias re='git rebase'
 alias lr='git l -10'
-alias cdr='cd $(git rev-parse --show-toplevel)' # cd to git Root
+alias cdr='cd "$(jj root 2>/dev/null || git rev-parse --show-toplevel)"' # cd to jj/git Root
 alias hs='git rev-parse --short HEAD'
 
 # jj
@@ -55,7 +55,13 @@ jp() {
   local root
   root=$(jj root) || return
   if [[ -f "$root/.pre-commit-config.yaml" || -f "$root/.pre-commit-config.yml" ]]; then
-    prek run --all-files || return
+    # Non-colocated safe: point git at jj's store and pass jj-tracked
+    # files explicitly (the store is bare, so --all-files finds nothing).
+    (
+      cd "$root" || exit
+      local -a files=("${(@f)$(jj file list)}")
+      GIT_DIR=$(jj git root) GIT_WORK_TREE=$root prek run --files "${files[@]}"
+    ) || return
   fi
   jj git push "$@"
 }
@@ -89,7 +95,7 @@ eval "$(zoxide init zsh)"
 eval "$(fzf --zsh)"
 
 chpwd() {
-    if [ -f ".pre-commit-config.yaml" ] && [ ! -f ".git/hooks/pre-commit" ]; then
+    if [ -f ".pre-commit-config.yaml" ] && [ -d ".git" ] && [ ! -f ".git/hooks/pre-commit" ]; then
         prek install
     fi
 }
