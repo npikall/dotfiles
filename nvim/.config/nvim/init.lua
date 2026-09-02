@@ -424,6 +424,7 @@ do
         formatterPrintWidth = 88,
       },
     },
+    ols = {},
     -- pyright = {},
     -- rust_analyzer = {},
     -- ts_ls = {},
