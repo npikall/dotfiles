@@ -12,6 +12,8 @@ lr = ["log", "-r", "all()", "-n", "10"]
 "format_timestamp(timestamp)" = "timestamp.ago()"
 
 [templates]
+# NOTE: use this for project specific branch conventions
+# git_push_bookmark = '"push-" ++ change_id.short()'
 draft_commit_description = '''
 concat(
   coalesce(description, default_commit_description, "\n"),
@@ -30,6 +32,7 @@ default-command = "log"
 diff-editor = ":builtin"
 merge-editor = ":builtin"
 tag-list-sort-keys = ["author-date-"]
+log-word-wrap = true
 
 [signing]
 behavior = "own"
@@ -38,3 +41,6 @@ key = "~/.ssh/id_ed25519.pub"
 
 [remotes.origin]
 auto-track-bookmarks = "*"
+
+[git]
+colocate = false
