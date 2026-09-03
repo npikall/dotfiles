@@ -84,6 +84,8 @@ cask "ghostty"
 cask "zed"
 # Release engineering, simplified
 cask "goreleaser/tap/goreleaser"
+# A minimal package manager for Typst
+cask "npikall/tap/gotpm", trusted: true
 go "github.com/spf13/cobra-cli"
 go "github.com/golangci/golangci-lint/v2/cmd/golangci-lint"
 go "github.com/icholy/gomajor"
