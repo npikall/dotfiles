@@ -259,6 +259,19 @@ do
     },
   }
   vim.keymap.set('n', '<leader>gi', function() lazygit:toggle() end, { desc = 'Toggle lazygit' })
+
+  -- Save buffers around vcs commands (e.g. jj) run from this terminal, since
+  -- they operate on disk state, not nvim's buffers.
+  local vcs = Terminal:new {
+    hidden = true,
+    direction = 'float',
+    float_opts = {
+      border = 'curved',
+    },
+    on_open = function() vim.cmd 'silent! wa' end,
+    on_close = function() vim.cmd 'silent! wa' end,
+  }
+  vim.keymap.set('n', '<leader>j', function() vcs:toggle() end, { desc = 'Toggle VCS (jj) Terminal' })
 end
 
 -- ============================================================
