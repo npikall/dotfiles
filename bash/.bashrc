@@ -44,6 +44,9 @@ eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 eval "$(fzf --bash)"
 
+# Remember the SSH password
+eval "$(keychain --eval --quiet id_ed25519)"
+
 z() {
     __zoxide_z "$@" && if [ -f ".pre-commit-config.yaml" ] && [ ! -f ".git/hooks/pre-commit" ]; then
         prek install
@@ -135,7 +138,7 @@ alias c='clear'
 alias dev='zellij --layout $HOME/.config/zellij/layouts/server.kdl'
 alias gi='lazygit'
 alias la='ls -A'
-alias ll='ls -alF'
+alias ll='ls -GF1'
 alias ve='echo "source .venv/bin/activate"; source .venv/bin/activate'
 alias de='echo "deactivate"; deactivate'
 alias vi='nvim'
@@ -170,14 +173,25 @@ alias lr='git l -10'
 alias cdr='cd $(git rev-parse --show-toplevel)' # cd to git Root
 alias hs='git rev-parse --short HEAD'
 
+alias docker='podman'
+alias cd='z'
+
 # jj
 alias jn='jj new'
 alias jc='jj commit'
 alias js='jj status'
 alias jf='jj git fetch'
 alias jfnm='jj git fetch && jj new main'
-alias jp='prek run -a && jj git push'
+# alias jp='prek run -a && jj git push'
 alias jd='jj diff'
+jp() {
+  local root
+  root=$(jj root) || return
+  if [[ -f "$root/.pre-commit-config.yaml" || -f "$root/.pre-commit-config.yml" ]]; then
+    prek run --all-files || return
+  fi
+  jj git push "$@"
+}
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -204,6 +218,7 @@ fi
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 export EDITOR="nvim"
 function y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -245,5 +260,6 @@ unset __conda_setup
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+eval "$(zizmor --completions bash)"
 source <(COMPLETE=bash jj)
+source <(goreleaser completion bash)
