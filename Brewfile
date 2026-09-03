@@ -1,7 +1,6 @@
 tap "dmmulroy/tap"
-tap "go-task/tap", trusted: { formulae: ["go-task"] }
-tap "goreleaser/tap"
-tap "jesseduffield/lazydocker"
+tap "goreleaser/tap", trusted: true
+tap "jesseduffield/lazydocker", trusted: true
 tap "npikall/tap", trusted: true
 tap "tinygo-org/tools"
 # Spell checker with better logic than ispell
@@ -29,11 +28,13 @@ brew "glab"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Task is a task runner/build tool that aims to be simpler and easier to use
-brew "go-task", link: false
+brew "go-task"
 # Configurable static site generator
 brew "hugo"
 # Command-line benchmarking tool
 brew "hyperfine"
+# TIFF library and utilities
+brew "libtiff"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Git-compatible distributed version control system
@@ -60,12 +61,12 @@ brew "resvg"
 brew "ripgrep"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
+# Personal key value store
+brew "skate"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
-# Send macOS User Notifications from the command-line
-brew "terminal-notifier"
 # Command-line tool for sharing terminal over the web
 brew "ttyd"
 # Find security issues in GitHub Actions setups
@@ -79,11 +80,10 @@ brew "tinygo-org/tools/tinygo", trusted: true
 cask "font-symbols-only-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
-# A fast, cross-platform build tool inspired by Make, designed for modern workflows.
-cask "go-task/tap/go-task", trusted: true
-cask "goreleaser"
 # Multiplayer code editor
 cask "zed"
+# Release engineering, simplified
+cask "goreleaser/tap/goreleaser"
 go "github.com/spf13/cobra-cli"
 go "github.com/golangci/golangci-lint/v2/cmd/golangci-lint"
 go "github.com/icholy/gomajor"
