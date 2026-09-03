@@ -46,7 +46,7 @@ alias jc='jj commit'
 alias js='jj status'
 alias jf='jj git fetch'
 alias jfnm='jj git fetch && jj new main'
-alias jp='jj git push'
+alias jp='prek run -a && jj git push'
 alias jd='jj diff'
 
 function y() {
