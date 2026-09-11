@@ -69,6 +69,8 @@ brew "starship"
 brew "stow"
 # Command-line tool for sharing terminal over the web
 brew "ttyd"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Find security issues in GitHub Actions setups
 brew "zizmor"
 # Shell extension to navigate your filesystem faster
