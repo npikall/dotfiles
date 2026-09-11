@@ -48,7 +48,6 @@ alias jf='jj git fetch'
 alias jfnm='jj git fetch && jj new main'
 alias jp='jj git push'
 alias jd='jj diff'
-alias jrt='jj retrunk'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

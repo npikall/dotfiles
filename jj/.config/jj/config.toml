@@ -7,10 +7,6 @@ email = "nikolas.pikall@gmail.com"
 [aliases]
 lr = ["log", "-r", "all()", "-n", "10"]
 
-[revset-aliases]
-"closest_bookmark(to)" = "heads(::to & bookmarks())"
-"branch_start(to)" = "heads(::to & trunk())+ & ::to"
-
 # From mitchellh
 [template-aliases]
 "format_timestamp(timestamp)" = "timestamp.ago()"

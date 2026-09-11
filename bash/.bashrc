@@ -178,7 +178,6 @@ alias jf='jj git fetch'
 alias jfnm='jj git fetch && jj new main'
 alias jp='jj git push'
 alias jd='jj diff'
-alias jrt='jj retrunk'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like

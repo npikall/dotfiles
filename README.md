@@ -1,68 +1,106 @@
 # Dotfiles
 
-A collection of my Dotfiles and configs for different applications.
+My personal dotfiles and setup for macOS and Linux: shell configs, editor and
+terminal tooling, and the [`git`][git]/[`jj`][jj] setup I use day to day.
 
-This repo uses [**GNU Stow**][stow] to manage the moving of the dotfiles.
-To install the config of a single package just run:
+Configs are symlinked into place with [**GNU Stow**][stow], driven by a
+`Justfile` so each package lands in the right spot — some belong directly in
+`$HOME` (`.bashrc`, `.gitconfig`, …), others under `$XDG_CONFIG_HOME` (or its
+macOS equivalent).
 
-```bash
-stow <package>
-```
+Day to day: **nvim** for writing code, **jj** for versioning (even on plain
+git repos), **zed** as the secondary editor when I'm off nvim, and
+**vscode** only when a project needs Jupyter notebooks.
 
-to create the symlinks for the specified package.
+## Installing dependencies
 
-Install all configs/dotfiles with:
-
-```bash
-just stow
-```
-
-This will also stow the rc files for
-
-- `zsh` on `macos`
-- `bash` on `linux`
-
-## Dependencies
-
-> [!NOTE]
-> There migth be a install script in the future to install everything at once.
-
-You will need to install the following dependencies for a nice experience:
-
-- [`delta`][delta] nicer git diffs in lazygit
-- [`gum`][gum] to make shell scripts interactive
-- [`just`][just] a taskrunner similar to makefiles
-- [`lazygit`][lazygit] a TUI for git written in go
-- [`neovim`][nvim] the main code editor
-- [`skate`][skate] a key-value store (optional)
-- [`starship`][starship] a cross-shell prompt
-- [`stow`][stow] to move the dotfiles from this repo to the targets
-- [`vscode`][vscode] a code editor (only for Jupyter Notebooks, instead of nvim)
-- [`yazi`][yazi] a terminal file manager written in rust
-- [`zoxide`][zoxide] a smarter `cd` command
-- [`zellij`][zellij] a easy to use terminal multiplexer
-
-## Scripts
-
-There are a couple of Shell Scripts, that are aliased in the `.bashrc`/`.zshrc` files, that will run:
-
-- a pomodoro timer
-- a `zellij`/`tmux` setup with two tabs, one for development and the other for a server
-- pre-configured copier templates for mainly python projects
+**macOS**, via Homebrew. Install [Homebrew itself][brew-install] first if
+you don't have it:
 
 ```bash
-just install-extensions
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-[delta]: https://dandavison.github.io/delta/
-[gum]: https://github.com/charmbracelet/gum
-[just]: https://github.com/casey/just
-[lazygit]: https://github.com/jesseduffield/lazygit
-[nvim]: https://neovim.io
-[skate]: https://github.com/charmbracelet/skate
-[starship]: https://starship.rs
+The Brewfile also installs a few tools through `uv` (`copier`, `prek`,
+`zensical`), so `uv` needs to already be on `PATH` — install it with the
+[official installer][uv-install] before running `brew bundle`:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then:
+
+```bash
+brew bundle install --file Brewfile
+```
+
+**Linux** (or anywhere without Homebrew):
+
+```bash
+./install.sh
+```
+
+This fetches prebuilt binaries straight from GitHub releases where possible,
+falling back to `cargo install`/`go install` (bootstrapping `rustup`/`go`
+itself if needed). It also installs `stow`, since that's needed before
+anything below will work. Set `INSTALL_DIR` to change where binaries go
+(default `~/.local/bin`), or `SKIP_SKATE=1` to skip the `skate` install.
+
+**Nix** isn't covered by either of the above — install it separately with
+the [official installer][nix-download]:
+
+```bash
+# macOS
+curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install | sh
+
+# Linux
+curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install | sh -s -- --daemon
+```
+
+Then `just stow nix` to enable flakes/`nix-command`.
+
+## Stowing the configs
+
+```bash
+just list          # show all available packages
+just list-bundles   # show bundles and what they contain
+just stow <pkg>     # symlink a single package into place
+just unstow <pkg>    # remove those symlinks again
+just stow-bundle all # stow a whole bundle at once
+```
+
+`just list`/`just list-bundles` are the source of truth for what's currently
+available — check there rather than relying on this file to enumerate every
+package.
+
+A few packages are shell-specific and OS-specific:
+
+- `zsh` is meant for macOS, `bash` for Linux.
+- `ghostty` only applies on macOS (`just ghostty`), since it stows straight
+  into `~/Library/Application Support/com.mitchellh.ghostty` instead of the
+  usual XDG config location.
+
+## What's in here
+
+- **Shells** — `bash`/`zsh` rc files (aliases, prompt, completions).
+- **`git`**/**`jj`** — git config plus helpers, and Jujutsu config/cheatsheet.
+- **`nvim`** — Neovim config, based on kickstart.nvim.
+- **`starship`** — cross-shell prompt.
+- **`yazi`** — terminal file manager.
+- **`zellij`** — terminal multiplexer, including a `server` layout with
+  develop/server/other tabs (aliased as `dev`).
+- **`lazygit`** — git TUI config, uses `delta` for diffs.
+- **`zed`**, **`vscode`** — editor settings; VS Code is mainly for Jupyter
+  notebooks.
+- **`ghostty`** — terminal emulator config (macOS only).
+- **`nix`** — enables flakes/nix-command.
+- **`scripts`** — small helper scripts stowed to `~/scripts` (e.g. the
+  pomodoro timer aliased as `pomo`).
+
+[nix-download]: https://nixos.org/download
+[brew-install]: https://brew.sh
+[uv-install]: https://docs.astral.sh/uv/getting-started/installation/
+[git]: https://git-scm.com
+[jj]: https://jj-vcs.github.io/jj/
 [stow]: https://www.gnu.org/software/stow/
-[vscode]: https://code.visualstudio.com
-[yazi]: https://yazi-rs.github.io
-[zoxide]: https://github.com/ajeetdsouza/zoxide#getting-started
-[zellij]: https://zellij.dev

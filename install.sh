@@ -265,6 +265,27 @@ install_yazi() {
         && _ok "yazi + ya (cargo-binstall)"
 }
 
+# fzf's release assets use Go-style os_arch naming ("linux_amd64",
+# "darwin_arm64"), which doesn't match either of the try_rust/try_go
+# templates, so it gets its own installer.
+install_fzf() {
+    if is_installed fzf; then _skip fzf; return; fi
+
+    local goos tag url tmp
+    goos=$(get_os); [[ "$goos" == "macos" ]] && goos="darwin"
+    tag=$(latest_tag "junegunn/fzf")
+    url="https://github.com/junegunn/fzf/releases/download/${tag}/fzf-$(strip_v "$tag")-${goos}_$(get_goarch).tar.gz"
+
+    tmp=$(mktemp -d)
+    trap 'rm -rf "${tmp}"' RETURN
+
+    _info "Installing fzf..."
+    curl -fsSL "$url" -o "${tmp}/fzf.tar.gz"
+    tar -xzf "${tmp}/fzf.tar.gz" -C "${tmp}"
+    install -m755 "${tmp}/fzf" "${INSTALL_DIR}/fzf" \
+        && _ok "fzf (github release)"
+}
+
 # --- Main ---
 
 echo ""
@@ -296,7 +317,12 @@ try_rust "zellij"   "zellij-org/zellij"   \
     "https://github.com/zellij-org/zellij/releases/download/{tag}/zellij-{target}.tar.gz" \
     "zellij"
 
+try_rust "jj"       "jj-vcs/jj"           \
+    "https://github.com/jj-vcs/jj/releases/download/{tag}/jj-{tag}-{target}.tar.gz" \
+    "jj-cli"
+
 install_yazi
+install_fzf
 
 try_go "gum"     "charmbracelet/gum"     \
     "https://github.com/charmbracelet/gum/releases/download/{tag}/gum_{version}_{OS}_{arch64}.tar.gz" \

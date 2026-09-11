@@ -1,6 +1,6 @@
 # jj Cheatsheet
 
-> Aliases: shell aliases from `.zshrc`, jj aliases from `config.toml`
+> Aliases: shell aliases from `.bashrc`/`.zshrc`, jj aliases from `config.toml`
 
 ---
 
@@ -36,7 +36,8 @@ In jj, `@` is always the working copy. You don't stage — you just edit files a
 ```sh
 # edit files
 jc -m "feat: add thing"   # commit, @ is now empty
-jj up                     # move bookmark to @-, push
+jj bookmark advance       # jj b a — move bookmark onto @-
+jp                         # push
 ```
 
 ---
@@ -47,11 +48,25 @@ jj up                     # move bookmark to @-, push
 |-----------|----|----|----------------|
 | List bookmarks | `jj bookmark list` | — | `git branch -a` |
 | Create bookmark | `jj bookmark create <name> -r @-` | — | `git branch <name>` |
-| Move bookmark to current commit | `jj tug` | — | — |
+| Advance nearest bookmark to `@` | `jj bookmark advance` | `jj b a` | — |
 | Move bookmark to specific rev | `jj bookmark move <name> --to <rev>` | — | `git branch -f <name> <sha>` |
 | Delete bookmark | `jj bookmark delete <name>` | — | `git branch -d <name>` |
-| Checkout remote branch | `jj checkout <name>` | — | `git checkout -t origin/<name>` |
-| Checkout remote branch (legacy alias) | `jj co-br <name>` | — | same |
+| Start work on a remote branch | `jf` then `jj new <name>` | — | `git fetch && git checkout -t origin/<name>` |
+
+Remote bookmarks auto-track on fetch (`auto-track-bookmarks = "*"` in
+`config.toml`), so `jf` + `jj new <name>` is all you need — no separate
+tracking step.
+
+### Typical "start new feature" workflow
+
+```sh
+jfnm                          # fetch + new change on top of main
+# edit files
+jc -m "feat: ..."
+jj bookmark create my-feature -r @-
+jj bookmark advance           # jj b a
+jp                            # push
+```
 
 ---
 
@@ -62,18 +77,8 @@ jj up                     # move bookmark to @-, push
 | Fetch from origin | `jj git fetch` | `jf` | `git fetch` |
 | Fetch + start on main | `jj git fetch && jj new main` | `jfnm` | `git pull origin main && git switch -c <branch>` |
 | Push current bookmark | `jj git push` | `jp` | `git push` |
-| Move bookmark + push | `jj up` | — | `git push` (after commit) |
-| Rebase onto trunk | `jj retrunk` | `jrt` | `git rebase origin/main` |
-
-### Typical "start new feature" workflow
-
-```sh
-jfnm                          # fetch + new change on top of main
-# edit files
-jc -m "feat: ..."
-jj bookmark create my-feature -r @-
-jj up                         # move bookmark + push
-```
+| Advance bookmark + push | `jj bookmark advance && jj git push` | `jj b a && jp` | `git push` (after commit) |
+| Rebase onto trunk | `jj rebase -d main` (or `master`) | — | `git rebase origin/main` |
 
 ---
 
@@ -83,11 +88,15 @@ jj up                         # move bookmark + push
 |-----------|----|----|----------------|
 | Squash into parent | `jj squash` | — | `git commit --amend` (roughly) |
 | Squash specific rev into parent | `jj squash -r <rev>` | — | `git rebase -i` → fixup |
-| Squash whole branch into one commit | `jj collapse` | — | `git rebase -i` → squash all |
+| Squash interactively (pick hunks) | `jj squash -i` | — | `git add -p && git commit --amend` |
 | Rebase onto different parent | `jj rebase -d <rev>` | — | `git rebase <rev>` |
-| Rebase onto trunk | `jj retrunk` | `jrt` | `git rebase origin/main` |
+| Rebase onto trunk | `jj rebase -d main` (or `master`) | — | `git rebase origin/main` |
 | Abandon (drop) a change | `jj abandon <rev>` | — | `git rebase -i` → drop |
 | Undo last operation | `jj undo` | — | `git reflog` + `git reset` |
+
+Squashing a whole feature branch into one commit isn't part of the workflow
+— PRs get squash-merged by GitHub/GitLab anyway. `jj squash -i` covers the
+rare case of moving specific changes by hand.
 
 ---
 
@@ -103,10 +112,9 @@ jj up                         # move bookmark + push
 
 ## Key Concepts
 
-**`@`** — working copy (always exists, auto-tracks file changes)  
-**`@-`** — parent of working copy (the last real commit)  
-**`trunk()`** — most recent `main`/`master` on a remote  
-**`closest_bookmark(@-)`** — nearest ancestor commit that has a bookmark  
+**`@`** — working copy (always exists, auto-tracks file changes)
+**`@-`** — parent of working copy (the last real commit)
+**`trunk()`** — most recent `main`/`master` on a remote
 
-**Why `@` is always empty after `jj commit`:**  
+**Why `@` is always empty after `jj commit`:**
 `jj commit` snapshots `@` into a real commit and opens a fresh empty `@` on top. This is normal — edit files, then `jc` again.
