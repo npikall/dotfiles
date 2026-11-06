@@ -4,7 +4,7 @@ My personal dotfiles and setup for macOS and Linux: shell configs, editor and
 terminal tooling, and the [`git`][git]/[`jj`][jj] setup I use day to day.
 
 Configs are symlinked into place with [**GNU Stow**][stow], driven by a
-`Justfile` so each package lands in the right spot — some belong directly in
+`justfile` so each package lands in the right spot — some belong directly in
 `$HOME` (`.bashrc`, `.gitconfig`, …), others under `$XDG_CONFIG_HOME` (or its
 macOS equivalent).
 
@@ -63,21 +63,32 @@ Then `just stow nix` to enable flakes/`nix-command`.
 ## Stowing the configs
 
 ```bash
-just list          # show all available packages
-just list-bundles   # show bundles and what they contain
-just stow <pkg>     # symlink a single package into place
-just unstow <pkg>    # remove those symlinks again
-just stow-bundle all # stow a whole bundle at once
+just                         # help: packages, bundles, recipes
+just list                    # show packages and where they get linked
+just status                  # installed / partial / missing / stale links
+just list-bundles            # show bundles and what they contain
+just stow nvim               # symlink a package into place
+just stow git jj             # several packages at once
+just unstow nvim             # remove those symlinks again
+just stow-bundle all         # a whole bundle at once
 ```
 
 `just list`/`just list-bundles` are the source of truth for what's currently
 available — check there rather than relying on this file to enumerate every
 package.
 
+**Adding a tool:** create a top-level directory that mirrors where its files
+live relative to `~` (e.g. `foo/.config/foo/config.toml`), then `just stow foo`.
+That's it — every top-level directory is a package linked into `~`.
+
+Only exceptions go into `packages.conf`: packages that link somewhere other
+than `~` (`target <pkg> <dir> [macos|linux]`) and bundles
+(`bundle <name> <pkgs>`). The logic behind the recipes lives in `lib/*.sh`.
+
 A few packages are shell-specific and OS-specific:
 
 - `zsh` is meant for macOS, `bash` for Linux.
-- `ghostty` only applies on macOS (`just ghostty`), since it stows straight
+- `ghostty` only exists on macOS (`just stow ghostty`), since it stows straight
   into `~/Library/Application Support/com.mitchellh.ghostty` instead of the
   usual XDG config location.
 

@@ -1,128 +1,64 @@
-[default]
-_default:
-    @echo "Home packages: {{ BLUE }}{{ BOLD }}{{ home_pkgs }}{{ NORMAL }}"
-    @echo "Config packages: {{ BLUE }}{{ BOLD }}{{ config_pkgs }}{{ NORMAL }}"
-    @echo "Bundles: {{ BLUE }}{{ BOLD }}base extras all{{ NORMAL }}"
-    @echo ""
-    @just --list
+# Dotfiles, symlinked into place with GNU Stow.
+#
+# Every top-level directory is a package that gets linked into ~.
+# Exceptions (other targets, bundles) live in packages.conf.
+# The logic lives in lib/*.sh; recipes here only call it.
 
-alias xl := ext-list
 alias xi := ext-install
+alias xl := ext-list
 
-home := home_directory()
-config_dir := config_directory()
-xdg_config_dir := if env('XDG_CONFIG_HOME', '') =~ '^/' { env('XDG_CONFIG_HOME') } else { home_directory() / '.config' }
-shell_pkg := if os() == "macos" { "zsh" } else { "bash" }
+# Show packages, bundles and recipes
+[private]
+default:
+    @lib/info.sh summary
+    @just --list --unsorted
 
-home_pkgs := "bash zsh cobra rustfmt scripts nvim starship yazi zellij git jj pi zed worktrunk nix rex"
-config_pkgs := "lazygit vscode crush"
-
-base_bundle := "lazygit nvim starship yazi zellij git"
-extras_bundle := "cobra rustfmt scripts"
-all_bundle := shell_pkg + " " + base_bundle + " " + extras_bundle
-
-# List all available packages
+# List all packages and where they get linked
 [group("info")]
 list:
-    #!/usr/bin/env bash
-    echo "{{ BOLD }}Home packages:{{ NORMAL }}"
-    for pkg in {{ home_pkgs }}; do echo "  {{ BLUE }}{{ BOLD }}$pkg{{ NORMAL}}"; done
-    echo ""
-    echo "{{ BOLD }}Config packages:{{ NORMAL }}"
-    for pkg in {{ config_pkgs }}; do echo "  {{ BLUE }}{{ BOLD }}$pkg{{ NORMAL}}"; done
+    @lib/info.sh list
 
-# List all bundles and their contents
+# List all bundles and their packages
 [group("info")]
 list-bundles:
-    #!/usr/bin/env bash
-    echo "{{ BOLD }}base:{{ NORMAL }}   {{ base_bundle }}"
-    echo "{{ BOLD }}extras:{{ NORMAL }} {{ extras_bundle }}"
-    echo "{{ BOLD }}all:{{ NORMAL }}    {{ all_bundle }}"
+    @lib/info.sh bundles
 
-# Stow single package to correct location
+# Show installed, missing and stale packages
+[group("info")]
+status:
+    @lib/status.sh
+
+# Link packages, e.g. just stow nvim git
 [group("stow")]
-stow pkg:
-    #!/usr/bin/env bash
-    if echo "{{ home_pkgs }}" | grep -qw "{{ pkg }}"; then
-        stow {{ pkg }} --adopt
-        echo "{{ GREEN }}{{ BOLD }}Installed{{ NORMAL }}: {{ pkg }}"
-    elif echo "{{ config_pkgs }}" | grep -qw "{{ pkg }}"; then
-        stow {{ pkg }} -t "{{ config_dir }}" --adopt
-        echo "{{ GREEN }}{{ BOLD }}Installed{{ NORMAL }}: {{ pkg }}"
-    else
-        echo "{{ RED }}{{ BOLD }}Unknown package{{ NORMAL }}: {{ pkg }}"
-        echo "Home packages: {{ BLUE }}{{ BOLD }}{{ home_pkgs }}{{ NORMAL }}"
-        echo "Config packages: {{ BLUE }}{{ BOLD }}{{ config_pkgs }}{{ NORMAL }}"
-        exit 1
-    fi
+stow +pkgs:
+    @lib/stow.sh link {{ pkgs }}
 
-# Unstow single package from correct location
+# Unlink packages, e.g. just unstow nvim git
 [group("stow")]
-unstow pkg:
-    #!/usr/bin/env bash
-    if echo "{{ home_pkgs }}" | grep -qw "{{ pkg }}"; then
-        stow -D {{ pkg }}
-        echo "{{ GREEN }}{{ BOLD }}Uninstalled{{ NORMAL }}: {{ pkg }}"
-    elif echo "{{ config_pkgs }}" | grep -qw "{{ pkg }}"; then
-        stow -D {{ pkg }} -t "{{ config_dir }}"
-        echo "{{ GREEN }}{{ BOLD }}Uninstalled{{ NORMAL }}: {{ pkg }}"
-    else
-        echo "Unknown package: {{ pkg }}"
-        echo "Home:   {{ home_pkgs }}"
-        echo "Config: {{ config_pkgs }}"
-        exit 1
-    fi
+unstow +pkgs:
+    @lib/stow.sh unlink {{ pkgs }}
 
-# Stow bundle of packages (base|extras|all)
+# Link a bundle, e.g. just stow-bundle base
 [group("bundles")]
 stow-bundle name:
-    #!/usr/bin/env bash
-    case "{{ name }}" in
-        base)   pkgs="{{ base_bundle }}" ;;
-        extras) pkgs="{{ extras_bundle }}" ;;
-        all)    pkgs="{{ all_bundle }}" ;;
-        *)      echo "Unknown bundle: {{ name }} (base|extras|all)"; exit 1 ;;
-    esac
-    for pkg in $pkgs; do
-        just stow "$pkg"
-    done
+    @lib/stow.sh link-bundle {{ name }}
 
-# Unstow bundle of packages (base|extras|all)
+# Unlink a bundle, e.g. just unstow-bundle base
 [group("bundles")]
 unstow-bundle name:
-    #!/usr/bin/env bash
-    case "{{ name }}" in
-        base)   pkgs="{{ base_bundle }}" ;;
-        extras) pkgs="{{ extras_bundle }}" ;;
-        all)    pkgs="{{ all_bundle }}" ;;
-        *)      echo "Unknown bundle: {{ name }} (base|extras|all)"; exit 1 ;;
-    esac
-    for pkg in $pkgs; do
-        just unstow "$pkg"
-    done
+    @lib/stow.sh unlink-bundle {{ name }}
 
-# Stow ghostty config [macos]
-[group("stow")]
-[macos]
-ghostty:
-    stow ghostty -t "{{ home }}/Library/Application Support/com.mitchellh.ghostty" --adopt
+# Install all extensions listed in the file
+[group("vscode")]
+ext-install file="vscode-extensions.txt":
+    @while read -r ext; do echo "install $ext"; code --install-extension "$ext"; done < {{ file }}
 
-# Uninstall all extensions saved in vscode-extensions.txt
-[group("vscode-extensions")]
+# Uninstall every installed extension
+[group("vscode")]
 ext-uninstall:
-    code --list-extensions | while read extension; do \
-    code --uninstall-extension $extension --force; \
-    done
+    @code --list-extensions | while read -r ext; do echo "uninstall $ext"; code --uninstall-extension "$ext" --force; done
 
-# Install all extensions saved in vscode-extensions.txt
-[group("vscode-extensions")]
-ext-install:
-    while read -r line; do \
-    echo "install $line"; \
-    code --install-extension "$line"; \
-    done < vscode-extensions.txt
-
-# List all vscode extensions and write them in the extensions file
-[group("vscode-extensions")]
+# Write installed extensions to the file
+[group("vscode")]
 ext-list file="vscode-extensions.txt":
     code --list-extensions --show-versions > {{ file }}
